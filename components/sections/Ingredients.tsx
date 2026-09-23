@@ -23,7 +23,7 @@ const TONES: Record<Ingredient["tone"], string> = {
  * story. Tapping expands it in place on small screens.
  */
 export function Ingredients() {
-  const chapter = site.chapters[5];
+  const chapter = site.chapters[3];
   const [activeId, setActiveId] = useState(ingredients[0]?.id);
   const [openId, setOpenId] = useState<string | null>(null);
   const active = ingredients.find((i) => i.id === activeId) ?? ingredients[0];
@@ -123,7 +123,7 @@ function Tile({ ing }: { ing: Ingredient }) {
               {ing.name.charAt(0)}
             </span>
             <div>
-              <p className="t-eyebrow opacity-80">{ing.origin}</p>
+              <p className="t-eyebrow opacity-95">{ing.origin}</p>
               <p className="mt-2 font-display text-3xl leading-none">{ing.name}</p>
             </div>
           </div>

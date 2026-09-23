@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { IBM_Plex_Serif, Manrope } from "next/font/google";
 import { site } from "@/data/site";
+import { contact } from "@/data/contact";
 import { SmoothScroll } from "@/components/providers/SmoothScroll";
 import { Cursor } from "@/components/ui/Cursor";
 import "./globals.css";
@@ -83,7 +84,7 @@ const jsonLd = {
   geo: { "@type": "GeoCoordinates", latitude: site.geo.lat, longitude: site.geo.lng },
   hasMap: site.links.maps,
   sameAs: [site.links.instagram, site.links.maps],
-  ...(site.phone ? { telephone: site.phone } : {}),
+  ...(contact.phone ? { telephone: contact.phone } : {}),
   ...(site.hours.schedule?.length
     ? {
         openingHoursSpecification: site.hours.schedule.map((h) => ({

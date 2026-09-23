@@ -15,12 +15,14 @@ import { Eyebrow } from "@/components/ui/Eyebrow";
  * Cover. Paper on the left, Chef Jenny bleeding off the right and bottom.
  * The headline runs across the photo edge and switches from indigo to paper
  * exactly where the photograph begins (two clipped copies of the same text).
+ * Everything a first-time visitor needs — what MINIBÉ is, the two formats,
+ * and how to get in touch — is visible without scrolling.
  */
 export function Hero() {
   const ref = useRef<HTMLElement>(null);
   const photoRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
-  const headRef = useRef<HTMLDivElement>(null);
+  const headRef = useRef<HTMLSpanElement>(null);
   const { scrollTo } = useScroll();
 
   // Keep the duotone split aligned to the photo's left edge.
@@ -85,11 +87,8 @@ export function Hero() {
       </div>
 
       {/* Vertical editorial label — desktop */}
-      <p
-        aria-hidden
-        className="vertical-text t-eyebrow absolute bottom-10 left-6 hidden rotate-180 text-ink/50 xl:block"
-      >
-        An evening built around dessert
+      <p aria-hidden className="vertical-text t-eyebrow absolute bottom-10 left-6 hidden rotate-180 text-ink/50 xl:block">
+        {site.offer}
       </p>
 
       <div className="wrap relative flex min-h-svh flex-col pt-20 md:pt-24">
@@ -103,19 +102,19 @@ export function Hero() {
             </Eyebrow>
           </div>
 
-          <div className="lg:mt-10">
-            <div className="mb-6 lg:mb-10">
+          <div className="lg:mt-8">
+            <div className="mb-6 lg:mb-9">
               <span className="block lg:hidden">
                 <Logo variant="wordmark" tone="white" width={200} priority />
               </span>
               <span className="hidden lg:block">
-                <Logo variant="wordmark" tone="indigo" width={300} priority />
+                <Logo variant="wordmark" tone="indigo" width={290} priority />
               </span>
             </div>
 
             <h1 id="hero-title" className="relative">
               <span className="sr-only">
-                {site.name} — {site.tagline} {site.by}
+                {site.name} — {site.tagline} {site.by}. {site.offer}
               </span>
               <span
                 ref={headRef}
@@ -142,31 +141,39 @@ export function Hero() {
                 />
               </span>
             </h1>
-            <p className="t-eyebrow mt-5 text-paper/80 lg:mt-7 lg:text-ink/70">{site.by}</p>
+
+            <p className="mt-5 font-display text-xl font-light text-paper lg:mt-6 lg:text-[1.6rem] lg:text-indigo">
+              {site.offer}
+            </p>
           </div>
 
-          <div className="mt-10 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between lg:mt-0">
-            <div>
-              <p className="t-lead max-w-xs text-paper/90 lg:text-ink">
-                From the Andamans.
-                <br />
-                Now in Bengaluru.
-              </p>
-              <div className="mt-6 flex flex-wrap items-center gap-x-8 gap-y-4">
-                <Button href={site.links.reserve} external variant="primary" size="lg" cursor="reserve">
-                  {site.cta.primary}
-                </Button>
-                <a
-                  href="#begins"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    scrollTo("#begins", { offset: -64 });
-                  }}
-                  className="t-eyebrow link-underline text-paper/80 lg:text-ink/70"
-                >
-                  Discover MINIBÉ ↓
-                </a>
-              </div>
+          {/* Kept inside the paper column on desktop so nothing sits on the photograph */}
+          <div className="mt-9 flex flex-col gap-7 lg:mt-0 lg:w-[46%] lg:max-w-xl">
+            <p className="t-body-sm text-paper/90 lg:text-ink-soft">{site.intro}</p>
+
+            <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
+              <Button
+                href="#contact"
+                variant="primary"
+                size="lg"
+                cursor="reserve"
+                onClick={(e) => {
+                  e.preventDefault();
+                  scrollTo("#contact", { offset: -64 });
+                }}
+              >
+                {site.cta.primary}
+              </Button>
+              <a
+                href="#experience"
+                onClick={(e) => {
+                  e.preventDefault();
+                  scrollTo("#experience", { offset: -64 });
+                }}
+                className="t-eyebrow link-underline text-paper/80 lg:text-ink/70"
+              >
+                {site.cta.explore} ↓
+              </a>
             </div>
           </div>
         </div>

@@ -1,10 +1,15 @@
 /**
- * MINIBÉ menus — transcribed exactly from the client-supplied menu PDFs
- * ("Opening Act Tasting Menu" and "Mosaic"). Nothing here is invented.
+ * MINIBÉ menus — transcribed exactly from the client-supplied menu PDFs.
+ * Nothing here is invented.
  *
- * To update a menu, edit this file only. Prices are in INR.
- * Set `available: false` to hide an item without deleting it.
- * `image` is null until MINIBÉ supplies dish photography.
+ * Two things live in this file:
+ *   1. `aLaCarteMenu`  — the standing à la carte (from "Opening Act"). Shown in full.
+ *   2. `menuArchive`   — the tasting menu chapters, newest first. The tasting
+ *      menu changes every three months, so the site never depends on the
+ *      current one: add a new entry each quarter and nothing else moves.
+ *
+ * Prices are in INR. Set `available: false` to hide an item without deleting
+ * it. `image` is null until MINIBÉ supplies dish photography.
  */
 import type { SiteImage } from "./images";
 
@@ -37,20 +42,23 @@ export type MenuItem = {
   available: boolean;
 };
 
-export type OpeningActMenu = {
-  id: "opening-act";
+export type ALaCarteMenu = {
+  id: "a-la-carte";
   title: string;
   subtitle: string;
+  /** The printed menu these items come from, for MINIBÉ's own reference. */
+  sourceName: string;
   categories: MenuCategory[];
   items: MenuItem[];
   footnote: string;
   currency: string;
 };
 
-export const openingActMenu: OpeningActMenu = {
-  id: "opening-act",
-  title: "Opening Act",
-  subtitle: "A little something before the evening becomes a story.",
+export const aLaCarteMenu: ALaCarteMenu = {
+  id: "a-la-carte",
+  title: "The À La Carte",
+  subtitle: "Not every visit needs to be a tasting menu. Come by for a plated dessert, something savoury, or a little something in between.",
+  sourceName: "Opening Act",
   currency: "₹",
   categories: ["Dessert", "Savoury", "Sips"],
   footnote: "If you crave for more, ask for today's specials.",
@@ -236,7 +244,47 @@ export const openingActMenu: OpeningActMenu = {
 };
 
 /* ------------------------------------------------------------------
-   MOSAIC — tasting menu
+   THE TASTING MENU — evergreen framing. No current-menu detail lives
+   here, so the website never goes stale between chapters.
+------------------------------------------------------------------- */
+
+export const tastingMenu = {
+  title: "The Tasting Menu",
+  subtitle: "A seasonal journey through MINIBÉ.",
+  lines: [
+    "Every three months, we create a new tasting menu around a new idea, season or story.",
+    "The menu evolves, but the philosophy remains the same: dessert at the centre, with pastry and the savoury kitchen working together.",
+  ],
+  currentPrompt: {
+    heading: "Want to know what's currently on the table?",
+    line: "Our tasting menu changes every three months.",
+  },
+  meta: "Seasonal · Multi course · Chef led",
+};
+
+/* ------------------------------------------------------------------
+   THE MENU ARCHIVE — one entry per chapter, newest first.
+   Adding next quarter's menu is a single object here.
+------------------------------------------------------------------- */
+
+export type ArchiveEntry = {
+  id: string;
+  /** The chapter name, e.g. "Mosaic". */
+  name: string;
+  /** Season label as MINIBÉ writes it, e.g. "Sep – Nov 2026". */
+  dates: string;
+  /** "current" gets the highlighted treatment; "past" is archived. */
+  status: "current" | "past";
+  /** One line about the chapter. Optional. */
+  note: string | null;
+  /** Courses, where the menu has been transcribed. Null = name and dates only. */
+  courses: MosaicCourse[] | null;
+  /** Artwork/photograph for the chapter. Null renders a typographic tile. */
+  image: SiteImage | null;
+};
+
+/* ------------------------------------------------------------------
+   MOSAIC — the current tasting menu chapter
 ------------------------------------------------------------------- */
 
 export type MosaicCourse = {
@@ -367,6 +415,40 @@ export function courseComponentSets(
     { label: b.label, components: b.components },
   ];
 }
+
+/**
+ * The archive, newest first. To add next quarter: put a new object on top
+ * with `status: "current"`, and change this one to "past".
+ *
+ * Only Mosaic has been transcribed; earlier chapters are listed by name and
+ * season, which is all MINIBÉ has supplied. Add a `courses` array (and an
+ * `image`) to any entry and its panel fills out automatically.
+ */
+export const menuArchive: ArchiveEntry[] = [
+  {
+    id: "mosaic",
+    name: mosaicMenu.title,
+    dates: "Sep – Nov 2026",
+    status: "current",
+    note: mosaicMenu.subtitle,
+    courses: mosaicMenu.courses,
+    image: {
+      src: "/images/photos/mosaic-artwork.jpg",
+      alt: "Mosaic — the menu artwork: tesserae of blue, teal, gold and pink",
+      width: 949,
+      height: 1343,
+    },
+  },
+  {
+    id: "sagarika",
+    name: "Sagarika",
+    dates: "Jun – Aug 2026",
+    status: "past",
+    note: null,
+    courses: null,
+    image: null,
+  },
+];
 
 export function formatPrice(amount: number, currency = "₹") {
   return `${currency}${amount.toLocaleString("en-IN")}`;

@@ -41,7 +41,7 @@ export function Respect() {
               parallax={5}
               cursor="view"
             />
-            <p className="t-caption mt-4 text-ink/55">{images.berriesBarley.alt}</p>
+            <p className="t-caption mt-4 text-ink/70">{images.berriesBarley.alt}</p>
           </div>
         </div>
 

@@ -2,20 +2,22 @@
 
 import Image from "next/image";
 import { useMemo, useState } from "react";
-import { openingActMenu, formatPrice, type MenuItem, type AllergenCode } from "@/data/menus";
+import { aLaCarteMenu, formatPrice, type MenuItem, type AllergenCode } from "@/data/menus";
+import { site } from "@/data/site";
 import { cn } from "@/lib/cn";
 import { WordReveal } from "@/components/ui/WordReveal";
 import { Reveal } from "@/components/ui/Reveal";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { AllergenChips, AllergenLegend } from "@/components/ui/AllergenChips";
+import { Button } from "@/components/ui/Button";
 
 /**
- * Menu 01 — Opening Act. An editorial list, not a card grid: hairlines,
- * serif names, tracked badges, tabular prices. Hovering a dish (desktop)
- * fills the sticky panel on the left; on small screens a tap expands it in place.
+ * The à la carte. An editorial list, not a card grid: hairlines, serif names,
+ * tracked badges, tabular prices. Hovering a dish (desktop) fills the sticky
+ * panel on the left; on small screens a tap expands it in place.
  */
-export function OpeningAct() {
-  const menu = openingActMenu;
+export function ALaCarte() {
+  const menu = aLaCarteMenu;
   const items = useMemo(() => menu.items.filter((i) => i.available), [menu.items]);
   const firstWithImage = items.find((i) => i.image) ?? items[0];
   const [activeId, setActiveId] = useState<string>(firstWithImage?.id ?? "");
@@ -29,15 +31,15 @@ export function OpeningAct() {
   }, [items]);
 
   return (
-    <section id="opening-act" className="wrap scroll-mt-20 py-section-sm md:py-section" aria-labelledby="opening-act-title">
+    <div id="a-la-carte" className="scroll-mt-20">
       <header className="grid grid-cols-12 gap-x-6 gap-y-6">
-        <div className="col-span-12 lg:col-span-7">
+        <div className="col-span-12 lg:col-span-6">
           <Eyebrow rule className="text-orange-deep">
-            Menu 01
+            Plated desserts · Savoury · Bakes · Beverages
           </Eyebrow>
-          <WordReveal as="h2" id="opening-act-title" text={menu.title} className="t-section mt-6 text-indigo" />
+          <WordReveal as="h3" id="a-la-carte-title" text={menu.title} className="t-section mt-6 text-indigo" />
         </div>
-        <Reveal className="col-span-12 flex items-end lg:col-span-4 lg:col-start-9">
+        <Reveal className="col-span-12 flex items-end lg:col-span-5 lg:col-start-8">
           <p className="t-quote text-ink-soft">{menu.subtitle}</p>
         </Reveal>
       </header>
@@ -78,13 +80,18 @@ export function OpeningAct() {
             );
           })}
 
-          <Reveal className="hairline mt-4 flex flex-col gap-4 pt-6 md:flex-row md:items-center md:justify-between">
-            <p className="font-display text-lg font-light italic text-ink-soft">{menu.footnote}</p>
-            <AllergenLegend codes={legendCodes} />
+          <Reveal className="hairline mt-4 flex flex-col gap-6 pt-6">
+            <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+              <p className="font-display text-lg font-light italic text-ink-soft">{menu.footnote}</p>
+              <AllergenLegend codes={legendCodes} />
+            </div>
+            <Button href={site.links.menu} external variant="outline" className="self-start">
+              {site.cta.aLaCarte}
+            </Button>
           </Reveal>
         </div>
       </div>
-    </section>
+    </div>
   );
 }
 
@@ -104,7 +111,7 @@ function MenuRow({
   onHover: () => void;
 }) {
   const hasDetails = item.ingredients.length > 0 || item.allergens.length > 0 || (item.addOns?.length ?? 0) > 0;
-  const panelId = `oa-${item.id}`;
+  const panelId = `alc-${item.id}`;
   const nameClass = cn(
     "font-display text-[1.5rem] leading-tight text-ink transition-colors duration-500 md:text-[1.75rem]",
     (active || expanded) && "text-orange",

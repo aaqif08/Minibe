@@ -1,4 +1,7 @@
+"use client";
+
 import { site } from "@/data/site";
+import { useScroll } from "@/components/providers/SmoothScroll";
 import { Logo } from "@/components/ui/Logo";
 import { Button } from "@/components/ui/Button";
 import { WordReveal } from "@/components/ui/WordReveal";
@@ -7,6 +10,8 @@ import { Reveal } from "@/components/ui/Reveal";
 /** Closing composition + minimal footer. */
 export function Footer() {
   const year = new Date().getFullYear();
+  const { scrollTo } = useScroll();
+
   return (
     <footer className="relative bg-midnight text-paper">
       {/* Final statement */}
@@ -17,14 +22,19 @@ export function Footer() {
           </Reveal>
         </div>
         <div className="col-span-12 mt-10 md:col-span-9 md:col-start-4 md:mt-0">
-          <WordReveal
-            as="p"
-            text={["An evening where", "dessert takes", "the spotlight."]}
-            className="t-hero text-paper"
-          />
+          <WordReveal as="p" text={["An evening where", "dessert takes", "centre stage."]} className="t-hero text-paper" />
           <Reveal className="mt-10 flex flex-col items-start gap-8 sm:flex-row sm:items-center sm:gap-10" delay={0.2}>
-            <Button href={site.links.reserve} external variant="primary" size="lg" cursor="reserve">
-              {site.cta.primary}
+            <Button
+              href="#contact"
+              variant="primary"
+              size="lg"
+              cursor="reserve"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollTo("#contact", { offset: -64 });
+              }}
+            >
+              {site.cta.secondary}
             </Button>
             <div className="t-eyebrow flex flex-wrap gap-x-8 gap-y-3 text-paper/70">
               <span>{site.city}</span>
@@ -47,8 +57,9 @@ export function Footer() {
             <p className="mt-5 max-w-xs font-display text-lg font-light leading-snug text-paper/80">
               {site.tagline}
               <br />
-              <span className="italic">{site.by}</span>
+              <span className="font-light italic">{site.by}</span>
             </p>
+            <p className="t-caption mt-4 text-paper/55">{site.offer}</p>
           </div>
 
           <div className="col-span-6 md:col-span-2 md:col-start-6">
@@ -83,7 +94,7 @@ export function Footer() {
             <ul className="t-body-sm flex flex-col gap-2 text-paper/80">
               <li>
                 <a href={site.links.reserve} target="_blank" rel="noopener noreferrer" className="link-underline">
-                  Reservations
+                  {site.cta.reserve}
                 </a>
               </li>
               <li>

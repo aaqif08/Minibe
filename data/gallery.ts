@@ -1,4 +1,4 @@
-/** "The Space" — MINIBÉ's own interior photography. Layout roles drive the asymmetric grid. */
+/** "The Space" — MINIBÉ's own interior photography, and how the room works. */
 import { images, type SiteImage } from "./images";
 
 export type GalleryItem = {
@@ -25,7 +25,7 @@ export const gallery: GalleryItem[] = [
   {
     id: "table",
     image: images.communalTable,
-    caption: "The communal table — dessert, shared.",
+    caption: "The community table — dessert, shared.",
     role: "large",
   },
   {
@@ -43,9 +43,13 @@ export const gallery: GalleryItem[] = [
 ];
 
 export const spaceCopy = {
-  title: ["The", "space"],
-  lines: [
-    "An intimate room built for dessert dining — a blue, underwater-inspired entrance that opens into coral and amber.",
-    "Guests share a communal table. The chef's pass sits close enough to watch every plate come together.",
+  title: ["Come as you are.", "Stay for dessert."],
+  lede: "An intimate room given entirely to dessert — a blue, underwater-inspired entrance that opens into coral and amber.",
+
+  /** How the room works, without a wall of text. */
+  zones: [
+    { id: "community", name: "The Community Table", line: "For people who want the tasting experience." },
+    { id: "pass", name: "The Chef's Pass", line: "For guests who want to be closer to the kitchen." },
+    { id: "table", name: "The Table", line: "For à la carte dining." },
   ],
 };

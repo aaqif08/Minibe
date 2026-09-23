@@ -124,14 +124,14 @@ export function Navbar() {
           <div className="flex items-center justify-self-end gap-3">
             <div className="hidden sm:block">
               <Button
-                href={site.links.reserve}
-                external
+                href="#contact"
                 variant="primary"
                 cursor="reserve"
                 magnetic={false}
+                onClick={go("#contact")}
                 className={scrolled ? "h-10 px-5" : ""}
               >
-                Reserve
+                {site.cta.primary}
               </Button>
             </div>
             <button

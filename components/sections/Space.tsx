@@ -15,23 +15,24 @@ const ROLE: Record<GalleryItem["role"], { cell: string; aspect: string; position
   wide: { cell: "lg:col-span-5", aspect: "aspect-[4/3] lg:aspect-auto lg:h-full", position: "50% 55%", from: "bottom" },
 };
 
-/** Chapter 07 — the room. Desktop: asymmetric grid. Mobile: a swipeable strip. */
+/**
+ * Chapter 06 — the room, and how it works. Desktop: asymmetric grid.
+ * Mobile: a swipeable strip. The three zones explain the seating without
+ * turning into a wall of text.
+ */
 export function Space() {
-  const chapter = site.chapters[6];
+  const chapter = site.chapters[5];
+
   return (
     <section id="space" data-chapter="space" className="py-section-sm md:py-section" aria-labelledby="space-title">
       <div className="wrap">
         <ChapterMarker chapter={chapter} />
         <div className="mt-14 grid grid-cols-12 gap-x-6 gap-y-8 md:mt-20">
-          <div className="col-span-12 lg:col-span-5">
+          <div className="col-span-12 lg:col-span-7">
             <WordReveal as="h2" id="space-title" text={spaceCopy.title} className="t-section text-orange" />
           </div>
-          <Reveal stagger={0.12} className="col-span-12 grid gap-5 self-end md:col-span-8 lg:col-span-5 lg:col-start-8">
-            {spaceCopy.lines.map((l, i) => (
-              <p key={i} className={i === 0 ? "t-lead text-ink" : "t-body text-ink-soft"}>
-                {l}
-              </p>
-            ))}
+          <Reveal className="col-span-12 flex items-end md:col-span-8 lg:col-span-4 lg:col-start-9">
+            <p className="t-lead text-ink">{spaceCopy.lede}</p>
           </Reveal>
         </div>
       </div>
@@ -52,8 +53,8 @@ export function Space() {
                   hover
                   cursor="view"
                 />
-                <p className="t-caption mt-3 flex gap-3 text-ink/55">
-                  <span className="tabular-nums text-ink/35">0{i + 1}</span>
+                <p className="t-caption mt-3 flex gap-3 text-ink/70">
+                  <span className="tabular-nums text-ink/70">0{i + 1}</span>
                   {g.caption}
                 </p>
               </li>
@@ -71,14 +72,27 @@ export function Space() {
           {gallery.map((g, i) => (
             <li key={g.id} className="w-[78vw] shrink-0 snap-center sm:w-[56vw]">
               <ImageReveal image={g.image} sizes="80vw" className="aspect-[4/5] w-full" position={ROLE[g.role].position} />
-              <p className="t-caption mt-3 flex gap-3 text-ink/55">
-                <span className="tabular-nums text-ink/35">0{i + 1}</span>
+              <p className="t-caption mt-3 flex gap-3 text-ink/70">
+                <span className="tabular-nums text-ink/70">0{i + 1}</span>
                 {g.caption}
               </p>
             </li>
           ))}
         </ul>
-        <p className="wrap t-eyebrow mt-4 text-ink/60">Swipe →</p>
+        <p className="wrap t-eyebrow mt-4 text-ink/75">Swipe →</p>
+      </div>
+
+      {/* How the room works */}
+      <div className="wrap">
+        <Reveal as="ul" stagger={0.12} className="mt-16 grid gap-0 md:mt-24 md:grid-cols-3" aria-label="Where to sit">
+          {spaceCopy.zones.map((z, i) => (
+            <li key={z.id} className="hairline py-7 md:border-r md:border-line md:pr-8 md:last:border-r-0">
+              <span className="t-eyebrow text-ink/40">0{i + 1}</span>
+              <h3 className="mt-3 font-display text-[1.75rem] leading-none text-indigo">{z.name}</h3>
+              <p className="t-body-sm mt-3 max-w-xs text-ink-soft">{z.line}</p>
+            </li>
+          ))}
+        </Reveal>
       </div>
     </section>
   );

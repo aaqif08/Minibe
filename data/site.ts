@@ -7,6 +7,8 @@ export const site = {
   name: "MINIBÉ",
   tagline: "An Experiential Dessert Dining",
   by: "by Chef Jenny",
+  /** The one line that says what MINIBÉ is. */
+  offer: "Plated desserts. Tasting menus. À la carte.",
   chef: {
     name: "Chef Jenny",
     instagram: "https://www.instagram.com/jennyclinta/",
@@ -15,17 +17,14 @@ export const site = {
   city: "Bengaluru",
   origin: "Andaman & Nicobar Islands",
 
-  /** Core positioning statement (approved copy). */
-  positioning:
-    "Indulge in a thoughtfully curated multi-course dessert dining experience. Expect seasonal ingredients, local inspirations, Andaman charm, and an evening where dessert is the spotlight.",
-
-  /** Line from MINIBÉ's Instagram bio. */
-  bioLine: "Andaman to France on the plates",
+  /** Homepage introduction — what MINIBÉ is, in one breath. */
+  intro:
+    "A dessert focused dining experience by Chef Jenny, bringing together pastry, savoury techniques, Indian ingredients and stories from her journey from the Andamans to France.",
 
   seo: {
     title: "MINIBÉ — An Experiential Dessert Dining in Bengaluru",
     description:
-      "MINIBÉ is an experiential dessert dining concept in Bengaluru by Chef Jenny, rooted in the Andaman Islands, seasonal ingredients, local produce and thoughtful culinary storytelling.",
+      "MINIBÉ is a dessert focused dining experience in Bengaluru by Chef Jenny — plated desserts, a seasonal tasting menu and à la carte, bringing together pastry, savoury technique and Indian ingredients.",
     /** Replace with the production domain when it goes live. */
     url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://minibe.in",
   },
@@ -56,42 +55,45 @@ export const site = {
     note: "Closed on Mondays",
     schedule: null as null | { days: string; open: string; close: string }[],
   },
-  phone: null as string | null,
-  email: null as string | null,
 
   cta: {
-    primary: "Reserve your experience",
-    secondary: "Book your table",
+    /** Header + sticky CTA. Deliberately not menu-specific, because the menu changes. */
+    primary: "Plan your visit",
+    secondary: "Get in touch",
+    explore: "Explore MINIBÉ",
+    reserve: "Reserve a table",
     directions: "Get directions",
     maps: "Open in Google Maps",
-    menu: "View current menu",
+    aLaCarte: "View à la carte",
+    archive: "View menu archive",
   },
 
-  /** Editorial chapter system — website art direction, not official MINIBÉ naming. */
+  /** Editorial chapter numbering, carried over from the brand portfolio. */
   chapters: [
-    { id: "begins", number: "01", title: "Where it begins" },
-    { id: "islands", number: "02", title: "The islands" },
-    { id: "story", number: "03", title: "Our story" },
-    { id: "chef", number: "04", title: "The chef" },
-    { id: "experience", number: "05", title: "The table" },
-    { id: "ingredient", number: "06", title: "The ingredient" },
-    { id: "space", number: "07", title: "The space" },
-    { id: "reserve", number: "08", title: "The last bite" },
+    { id: "experience", number: "01", title: "The experience" },
+    { id: "menus", number: "02", title: "The menus" },
+    { id: "archive", number: "03", title: "The archive" },
+    { id: "ingredient", number: "04", title: "The ingredient" },
+    { id: "story", number: "05", title: "Our story" },
+    { id: "space", number: "06", title: "The space" },
+    { id: "contact", number: "07", title: "Let's talk dessert" },
   ],
 
   nav: [
-    { label: "Story", href: "#story" },
-    { label: "Experience", href: "#experience" },
+    { label: "Home", href: "#top" },
+    { label: "The Experience", href: "#experience" },
     {
-      label: "Menu",
-      href: "#opening-act",
+      label: "Menus",
+      href: "#menus",
       children: [
-        { label: "Opening Act", href: "#opening-act" },
-        { label: "Mosaic", href: "#mosaic" },
+        { label: "The Tasting Menu", href: "#tasting-menu" },
+        { label: "The À La Carte", href: "#a-la-carte" },
+        { label: "The Menu Archive", href: "#archive" },
       ],
     },
+    { label: "Our Story", href: "#story" },
     { label: "Space", href: "#space" },
-    { label: "Visit", href: "#visit" },
+    { label: "Contact", href: "#contact" },
   ],
 
   closingLine: "Dessert, with a story to tell.",

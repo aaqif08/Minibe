@@ -86,7 +86,14 @@ export function MobileMenu({ open, onClose, onNavigate }: Props) {
       </nav>
 
       <div className="wrap flex flex-col gap-6 pb-10">
-        <Button href={site.links.reserve} external variant="primary" size="lg" magnetic={false} className="w-full">
+        <Button
+          href="#contact"
+          variant="primary"
+          size="lg"
+          magnetic={false}
+          onClick={onNavigate("#contact")}
+          className="w-full"
+        >
           {site.cta.primary}
         </Button>
         <div className="flex items-center justify-between t-eyebrow text-paper/70">

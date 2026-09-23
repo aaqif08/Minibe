@@ -44,7 +44,8 @@ export function WordReveal({
   useGsap(ref, ({ gsap }, el) => {
     const words = el.querySelectorAll<HTMLElement>("[data-word]");
     if (mode === "read") {
-      gsap.set(words, { opacity: 0.16 });
+      // 0.55 is the lowest that still clears 3:1 on paper at display sizes.
+      gsap.set(words, { opacity: 0.55 });
       gsap.to(words, {
         opacity: 1,
         ease: "none",
