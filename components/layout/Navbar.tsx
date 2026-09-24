@@ -54,7 +54,11 @@ export function Navbar() {
             scrolled ? "h-16" : "h-20 md:h-24",
           )}
         >
-          <Link href="/" className="justify-self-start" aria-label={`${site.name} — home`}>
+          <Link
+            href="/"
+            className="flex h-11 items-center justify-self-start"
+            aria-label={`${site.name} — home`}
+          >
             <Logo
               variant="wordmark"
               tone={onDark ? "white" : "indigo"}
@@ -70,7 +74,7 @@ export function Navbar() {
                   href={item.href}
                   aria-current={isActive(item.href) ? "page" : undefined}
                   className={cn(
-                    "t-eyebrow link-underline py-2 transition-colors duration-500",
+                    "t-eyebrow link-underline inline-flex min-h-11 items-center transition-colors duration-500",
                     isActive(item.href)
                       ? onDark
                         ? "text-orange"
@@ -87,6 +91,19 @@ export function Navbar() {
           </ul>
 
           <div className="flex items-center justify-self-end gap-3">
+            {/* Compact on phones so the header still reads MINIBÉ · Reserve · Menu */}
+            <a
+              href={site.links.reserve}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-cursor="reserve"
+              className={cn(
+                "t-eyebrow inline-flex min-h-11 items-center px-3 transition-colors duration-500 sm:hidden",
+                onDark ? "text-paper" : "text-orange-deep",
+              )}
+            >
+              {site.cta.reserve}
+            </a>
             <div className="hidden sm:block">
               <Button
                 href={site.links.reserve}
@@ -105,7 +122,7 @@ export function Navbar() {
               aria-label="Open menu"
               aria-expanded={open}
               aria-controls="mobile-menu"
-              className={cn("grid h-11 w-11 place-items-center lg:hidden", onDark ? "text-paper" : "text-ink")}
+              className={cn("-mr-2 grid h-11 w-11 place-items-center lg:hidden", onDark ? "text-paper" : "text-ink")}
             >
               <span className="relative block h-3 w-6">
                 <span className="absolute inset-x-0 top-0 h-px bg-current" />

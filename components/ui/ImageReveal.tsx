@@ -60,7 +60,12 @@ export function ImageReveal({
   useGsap(ref, ({ gsap, ScrollTrigger }, el) => {
     const inner = innerRef.current;
     if (!inner) return;
-    if (instant) {
+    // Already on (or above) the screen when the timeline is built — reveal it
+    // now rather than waiting for a scroll that may never come.
+    if (el.getBoundingClientRect().top < window.innerHeight) {
+      gsap.set(el, { clipPath: "none" });
+      gsap.fromTo(inner, { scale: 1.08 }, { scale: 1, duration: 1.6, ease: "expo.out" });
+    } else if (instant) {
       gsap.set(el, { clipPath: "none" });
       gsap.fromTo(inner, { scale: 1.1 }, { scale: 1, duration: 2.4, ease: "expo.out" });
     } else {

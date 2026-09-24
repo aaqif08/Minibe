@@ -31,7 +31,6 @@ export const site = {
 
   links: {
     reserve: "https://bookings.airmenus.in/minibe/order",
-    menu: "https://bookings.airmenus.in/minibe/order",
     instagram: "https://www.instagram.com/minibe_blr/",
     instagramHandle: "@minibe_blr",
     maps: "https://maps.app.goo.gl/287gM7KsKEreRh2b7",
@@ -47,15 +46,6 @@ export const site = {
   },
   geo: { lat: 12.967932, lng: 77.6481761 },
 
-  /**
-   * Opening hours. Only "Closed on Mondays" is confirmed (Instagram bio).
-   * Add rows like { days: "Tue – Sun", open: "12:00", close: "22:00" } once confirmed.
-   */
-  hours: {
-    note: "Closed on Mondays",
-    schedule: null as null | { days: string; open: string; close: string }[],
-  },
-
   cta: {
     /** Header + sticky CTA. Deliberately not menu-specific, because the menu changes. */
     primary: "Get in touch",
@@ -64,8 +54,6 @@ export const site = {
     reserveLong: "Reserve a table",
     directions: "Get directions",
     maps: "Open in Google Maps",
-    aLaCarte: "View à la carte",
-    archive: "View menu archive",
   },
 
   /**
@@ -74,10 +62,9 @@ export const site = {
    */
   chapters: [
     { id: "experience", number: "01", title: "The experience", href: "/experience" },
-    { id: "menus", number: "02", title: "The menus", href: "/menus" },
-    { id: "story", number: "03", title: "Our story", href: "/story" },
-    { id: "space", number: "04", title: "The space", href: "/space" },
-    { id: "contact", number: "05", title: "Let's talk dessert", href: "/contact" },
+    { id: "story", number: "02", title: "Our story", href: "/story" },
+    { id: "space", number: "03", title: "The space", href: "/space" },
+    { id: "contact", number: "04", title: "Let's talk dessert", href: "/contact" },
   ],
 
   /**
@@ -89,7 +76,6 @@ export const site = {
   /** Real routes — every header item is its own page. */
   nav: [
     { label: "The Experience", href: "/experience" },
-    { label: "Menus", href: "/menus" },
     { label: "Our Story", href: "/story" },
     { label: "Space", href: "/space" },
     { label: "Contact", href: "/contact" },
@@ -99,4 +85,11 @@ export const site = {
 };
 
 export type Chapter = (typeof site.chapters)[number];
+
+/** Look a page's folio up by id, so reordering the chapters can't break a page. */
+export function chapter(id: Chapter["id"]): Chapter {
+  const found = site.chapters.find((c) => c.id === id);
+  if (!found) throw new Error(`Unknown chapter: ${id}`);
+  return found;
+}
 export type NavItem = (typeof site.nav)[number];

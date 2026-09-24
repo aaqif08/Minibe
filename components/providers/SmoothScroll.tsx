@@ -49,6 +49,11 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
       lenisRef.current = lenis;
 
       lenis.on("scroll", ScrollTrigger.update);
+      // Lenis does not intercept native touch scrolling, restored scroll
+      // positions or programmatic jumps — without this, scroll-triggered
+      // reveals can stay hidden on mobile.
+      const onNativeScroll = () => ScrollTrigger.update();
+      window.addEventListener("scroll", onNativeScroll, { passive: true });
       const tick = (time: number) => lenis.raf(time * 1000);
       gsap.ticker.add(tick);
       gsap.ticker.lagSmoothing(0);
@@ -59,6 +64,7 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
       const t = window.setTimeout(refresh, 600);
 
       cleanup = () => {
+        window.removeEventListener("scroll", onNativeScroll);
         window.clearTimeout(t);
         gsap.ticker.remove(tick);
         lenis.destroy();

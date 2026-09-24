@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { site } from "@/data/site";
+import { contact } from "@/data/contact";
 import { story } from "@/data/story";
 import { images } from "@/data/images";
 import { ImageReveal } from "@/components/ui/ImageReveal";
@@ -35,21 +35,21 @@ export function VisitTeaser() {
       <h2 id="visit-teaser-title" className="sr-only">
         More of MINIBÉ
       </h2>
-      <Reveal as="ul" stagger={0.14} className="grid gap-10 md:grid-cols-2 md:gap-8">
+      <Reveal as="ul" stagger={0.14} className="grid gap-8 md:grid-cols-2">
         {CARDS.map((c) => (
           <li key={c.href}>
             <Link href={c.href} className="group block" data-cursor="view">
               <ImageReveal
                 image={c.image}
                 sizes="(min-width: 768px) 46vw, 100vw"
-                className="aspect-[16/10] w-full"
+                className="aspect-[3/2] w-full md:aspect-[16/9]"
                 position={c.position}
                 hover
               />
-              <Eyebrow rule className="mt-6 text-orange-deep">
+              <Eyebrow rule className="mt-5 text-orange-deep">
                 {c.eyebrow}
               </Eyebrow>
-              <h3 className="t-title mt-4 max-w-sm text-indigo transition-colors duration-500 group-hover:text-orange">
+              <h3 className="t-title mt-3 max-w-sm text-indigo transition-colors duration-500 group-hover:text-orange">
                 {c.title}
               </h3>
               <p className="t-caption mt-3 text-ink/70">{c.line}</p>
@@ -58,10 +58,17 @@ export function VisitTeaser() {
         ))}
       </Reveal>
 
-      <Reveal className="hairline mt-16 flex flex-col gap-5 pt-10 sm:flex-row sm:items-end sm:justify-between">
-        <p className="t-quote max-w-md text-ink-soft">Let&apos;s talk dessert.</p>
-        <Link href="/contact" className="t-eyebrow link-underline text-ink">
-          {site.cta.primary} →
+      {/* One line for everything MINIBÉ does beyond the table — the full list
+          and its enquiry links live on /contact, never here. */}
+      <Reveal className="hairline mt-12 flex flex-col gap-6 pt-8 md:flex-row md:items-end md:justify-between">
+        <div>
+          <p className="t-quote max-w-md text-ink-soft">Let&apos;s talk dessert.</p>
+          <p className="t-eyebrow mt-4 text-ink/70">
+            {contact.services.map((s) => s.name).join(" · ")}
+          </p>
+        </div>
+        <Link href="/contact" className="t-eyebrow link-underline shrink-0 text-ink">
+          Enquire with MINIBÉ →
         </Link>
       </Reveal>
     </section>

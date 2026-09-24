@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { site } from "@/data/site";
+import { site, chapter } from "@/data/site";
 import { story } from "@/data/story";
 import { respect } from "@/data/respect";
 import { ingredients, ingredientsCopy } from "@/data/ingredients";
@@ -23,13 +23,13 @@ export const metadata: Metadata = {
 
 /** /story — magazine-style storytelling on a midnight ground. */
 export default function StoryPage() {
-  const chapter = site.chapters[2];
+  const page = chapter("story");
 
   return (
     <>
       <div className="bg-midnight text-paper">
         <PageHeader
-          chapter={chapter}
+          chapter={page}
           title={story.title}
           lede={story.lede}
           light
@@ -218,9 +218,9 @@ export default function StoryPage() {
 
       <NextPage
         href="/space"
-        label="The space"
+        label="Step into MINIBÉ"
         note="The room the story happens in — blue at the door, coral and amber inside."
-        className="py-section-sm"
+        className="pt-section-sm"
       />
     </>
   );

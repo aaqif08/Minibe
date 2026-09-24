@@ -3,8 +3,7 @@
 /* ------------------------------------------------------------------
    MINIBÉ design tokens
    Colours are lifted from the brand portfolio (orange #FF751F,
-   indigo #240373, ink #242424). Mosaic colours come from the supplied
-   Mosaic menu artwork and are used ONLY inside the Mosaic chapter.
+   indigo #240373, ink #242424).
 ------------------------------------------------------------------- */
 @theme {
   --color-*: initial;
@@ -31,12 +30,6 @@
   --color-sea-deep: #0f3b6e;
   --color-wood: #8a5a33;
 
-  --color-mosaic-night: #0b1a2e;
-  --color-mosaic-teal: #23b5a5;
-  --color-mosaic-blue: #2f6fd6;
-  --color-mosaic-green: #8cc152;
-  --color-mosaic-gold: #f3ad3a;
-  --color-mosaic-pink: #ea6b8a;
 
   --font-display: var(--font-plex-serif), "Iowan Old Style", Georgia, serif;
   --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
@@ -96,21 +89,27 @@
 @utility t-display {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(3.25rem, 11vw, 11.5rem);
+  /* 8.6vw keeps the longest single word ("Bengaluru") inside a 320px screen */
+  font-size: clamp(2.5rem, 8.6vw, 11.5rem);
   line-height: 0.88;
   letter-spacing: -0.03em;
+}
+@media (min-width: 40rem) {
+  .t-display {
+    font-size: clamp(3.25rem, 11vw, 11.5rem);
+  }
 }
 @utility t-hero {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(2.75rem, 7.4vw, 7.5rem);
+  font-size: clamp(2.25rem, 7.4vw, 7.5rem);
   line-height: 0.92;
   letter-spacing: -0.025em;
 }
 @utility t-section {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(2.5rem, 6vw, 6.25rem);
+  font-size: clamp(2.125rem, 6vw, 6.25rem);
   line-height: 0.94;
   letter-spacing: -0.025em;
 }

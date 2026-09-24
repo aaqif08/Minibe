@@ -12,7 +12,7 @@ export const twoWays = {
       meta: "Seasonal · Multi course · Chef led",
       line: "A seasonal multi course experience where desserts take centre stage.",
       cta: "Explore",
-      href: "#tasting-menu",
+      href: "/experience",
     },
     {
       id: "a-la-carte",
@@ -20,7 +20,7 @@ export const twoWays = {
       meta: "Plated desserts · Savoury · Bakes · Beverages",
       line: "Our plated desserts and savoury creations, available to enjoy at your own pace.",
       cta: "Explore",
-      href: "#a-la-carte",
+      href: "/experience",
     },
   ],
 };

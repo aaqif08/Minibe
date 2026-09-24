@@ -22,10 +22,10 @@ function composeMessage(data: Record<string, string>) {
 }
 
 /**
- * "Register your interest" — the enquiry form. It submits through whichever
- * channel is configured in data/contact.ts (POST endpoint, then WhatsApp,
- * then email). With none configured the whole form is hidden by <Contact>,
- * so a visitor is never handed a dead form.
+ * The enquiry form. It submits through whichever channel is configured in
+ * data/contact.ts: a POST endpoint if one exists, otherwise WhatsApp, other-
+ * wise the guest's mail client — in each case with the enquiry pre-written,
+ * so nothing is claimed to send that does not.
  */
 export function EnquiryForm() {
   const [status, setStatus] = useState<Status>("idle");
@@ -96,7 +96,7 @@ export function EnquiryForm() {
 
       <fieldset className="grid gap-4">
         <legend className="t-eyebrow mb-1 text-paper/55">Interested in</legend>
-        <div className="flex flex-wrap gap-x-8 gap-y-4">
+        <div className="flex flex-wrap gap-x-7 gap-y-3.5">
           {contact.interests.map((opt, i) => (
             <label key={opt.id} className="group inline-flex cursor-pointer items-center gap-3">
               <input
@@ -122,8 +122,13 @@ export function EnquiryForm() {
       </fieldset>
 
       <label className="grid gap-2">
-        <span className="t-eyebrow text-paper/55">Anything else</span>
-        <input name="message" type="text" placeholder="Occasion, dietary needs, preferred dates…" className={field} />
+        <span className="t-eyebrow text-paper/55">Message</span>
+        <textarea
+          name="message"
+          rows={2}
+          placeholder="Occasion, dietary needs, preferred dates…"
+          className={cn(field, "resize-none")}
+        />
       </label>
 
       <div className="flex flex-wrap items-center gap-6">
@@ -136,7 +141,7 @@ export function EnquiryForm() {
             "transition-colors duration-500 ease-[var(--ease-expo)] hover:bg-paper hover:text-indigo disabled:opacity-60",
           )}
         >
-          {status === "sending" ? "Sending…" : "Send"}
+          {status === "sending" ? "Sending…" : "Send enquiry"}
           <svg viewBox="0 0 16 16" className="h-[0.9em] w-[0.9em]" fill="none" aria-hidden>
             <path d="M1 8h13M9 3l5 5-5 5" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
           </svg>

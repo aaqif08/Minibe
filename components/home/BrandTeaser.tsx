@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/Button";
 export function BrandTeaser() {
   return (
     <section className="bg-indigo text-paper" aria-labelledby="brand-teaser-title">
-      <div className="wrap py-section-sm md:py-section">
+      <div className="wrap py-section-sm">
         <div className="grid grid-cols-12 gap-x-6 gap-y-10">
           <div className="col-span-12 lg:col-span-8">
             <WordReveal

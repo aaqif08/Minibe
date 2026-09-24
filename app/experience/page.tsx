@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { site } from "@/data/site";
+import { chapter } from "@/data/site";
 import { experience } from "@/data/experience";
 import { ingredients, ingredientsCopy } from "@/data/ingredients";
 import { images } from "@/data/images";
@@ -20,12 +20,12 @@ export const metadata: Metadata = {
 
 /** /experience — bold typography over plated-dessert photography. */
 export default function ExperiencePage() {
-  const chapter = site.chapters[0];
+  const page = chapter("experience");
 
   return (
     <>
       <PageHeader
-        chapter={chapter}
+        chapter={page}
         title={experience.title}
         lede={experience.lede}
         titleClassName="text-indigo"
@@ -102,8 +102,8 @@ export default function ExperiencePage() {
             <Button href="/story" variant="outline">
               The whole story
             </Button>
-            <Button href="/menus" variant="text">
-              Explore our menus
+            <Button href="/contact" variant="text">
+              Ask us anything
             </Button>
           </Reveal>
         </div>
@@ -138,10 +138,10 @@ export default function ExperiencePage() {
       </section>
 
       <NextPage
-        href="/menus"
-        label="Menus"
-        note="The tasting menu, the à la carte and every chapter we've served."
-        className="pb-section-sm"
+        href="/contact"
+        label="Get in touch"
+        note="Plan a visit, or ask what's currently on the table."
+        className="pb-4"
       />
     </>
   );

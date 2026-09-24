@@ -47,7 +47,7 @@ export function Journey() {
                 0{i + 1}
                 <span className="mx-2 opacity-50">/</span>0{story.journey.length}
               </p>
-              <h2 className="t-display mt-5 uppercase text-paper">{step.place}</h2>
+              <h2 className="t-hero mt-5 uppercase text-paper">{step.place}</h2>
               <p className="t-quote mt-4 text-paper/80">{step.line}</p>
               <p className="t-body mt-7 max-w-lg text-paper/70">{step.note}</p>
             </div>

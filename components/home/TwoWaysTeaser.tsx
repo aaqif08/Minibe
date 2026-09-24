@@ -8,8 +8,8 @@ import { Reveal } from "@/components/ui/Reveal";
 const PHOTOS = [images.plating, images.berriesBarley];
 
 /**
- * Homepage teaser only — two photographic panels, both pointing at /menus.
- * The menus themselves live on that page, never here.
+ * Homepage teaser only — two photographic panels for the two ways to dine,
+ * both opening /experience. Conceptual: no dish, price or menu ever appears here.
  */
 export function TwoWaysTeaser() {
   return (
@@ -23,19 +23,19 @@ export function TwoWaysTeaser() {
         </Reveal>
       </div>
 
-      <Reveal as="ul" stagger={0.14} className="mt-12 grid gap-10 md:mt-16 md:grid-cols-2 md:gap-8">
+      <Reveal as="ul" stagger={0.14} className="mt-10 grid gap-8 md:mt-12 md:grid-cols-2 md:gap-8">
         {twoWays.options.map((opt, i) => (
           <li key={opt.id}>
-            <Link href="/menus" className="group block" data-cursor="view">
+            <Link href="/experience" className="group block" data-cursor="view">
               <ImageReveal
                 image={PHOTOS[i] ?? PHOTOS[0]}
                 sizes="(min-width: 768px) 46vw, 100vw"
-                className="aspect-[5/4] w-full md:aspect-[16/11]"
+                className="aspect-[3/2] w-full md:aspect-[16/10]"
                 from={i === 0 ? "left" : "right"}
                 position={i === 0 ? "50% 40%" : "50% 50%"}
                 hover
               />
-              <div className="mt-6 flex items-start justify-between gap-6">
+              <div className="mt-5 flex items-start justify-between gap-6">
                 <div>
                   <h3 className="t-title text-indigo transition-colors duration-500 group-hover:text-orange">
                     {opt.name}
@@ -51,7 +51,7 @@ export function TwoWaysTeaser() {
                   </svg>
                 </span>
               </div>
-              <span className="t-eyebrow link-underline mt-5 inline-block text-ink/70">{opt.cta} →</span>
+              <span className="t-eyebrow link-underline mt-4 inline-block text-ink/70">{opt.cta} →</span>
             </Link>
           </li>
         ))}

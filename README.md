@@ -4,16 +4,26 @@ Production website for MINIBÉ, Bengaluru. A real multi-page site: every header
 item is its own route, and the homepage is a cover, not the whole book.
 
 ```
-/            Home        cinematic cover, two formats, two doors out
+/            Home             cinematic cover, two formats, two doors out
 /experience  The Experience   what makes MINIBÉ different
-/menus       Menus            tasting menu · à la carte · the menu archive
 /story       Our Story        Andamans → France → Bali → Bengaluru, Jenny & Steffi
 /space       Space            the room, photography-led
-/contact     Contact          enquiry, WhatsApp, reserve, directions, catering
+/contact     Contact          channels, services, enquiry, directions
 ```
+
+There is deliberately **no menu route**. MINIBÉ will not maintain menu content
+after handover, so the site never shows dishes, prices or a current menu —
+"tasting menu" and "à la carte" appear only as descriptions of how MINIBÉ
+works. Do not reintroduce one.
 
 The header carries **RESERVE** (the AirMenus booking system) at all times.
 The homepage teases each page and never reproduces it — keep it that way.
+
+Every route ends the same way, from the shared layout:
+
+```
+[ page content ]  →  [ one closing CTA ]  →  LOCATION + MAP  →  dark footer  →  legal bar
+```
 
 ## Run
 
@@ -47,9 +57,8 @@ Nothing brand-facing is hard-coded in JSX. Edit the files in `data/`:
 
 | File | What it holds |
 | --- | --- |
-| `data/site.ts` | Name, offer line, intro, links, address, coordinates, **hours**, nav routes, page folios, CTA labels, which routes open on a dark ground |
-| `data/menus.ts` | **À la carte** items, the **tasting menu** framing, the **menu archive** |
-| `data/contact.ts` | WhatsApp / phone / email / form endpoint, enquiry options, WhatsApp message templates |
+| `data/site.ts` | Name, offer line, intro, links, address, coordinates, nav routes, page folios, CTA labels, which routes open on a dark ground |
+| `data/contact.ts` | Email, WhatsApp, phone, **services**, enquiry options and WhatsApp message templates, timings, form endpoint, map embed flag; re-exports address, maps, booking and Instagram from `site.ts` so contact components need one import |
 | `data/experience.ts` | "Two ways to experience MINIBÉ", "Dessert takes centre stage", the four pillars |
 | `data/story.ts` | The journey waypoints and "Meet Chef Jenny" |
 | `data/ingredients.ts` · `data/respect.ts` | Sourcing and sustainability copy |
@@ -58,26 +67,42 @@ Nothing brand-facing is hard-coded in JSX. Edit the files in `data/`:
 
 Things MINIBÉ has not supplied are `null` and render nothing: opening hours
 beyond "Closed on Mondays", phone, WhatsApp, email, dish and ingredient
-photography, Instagram tiles.
+photography, Instagram tiles. The footer's Timings block only appears once
+`contact.timings.weekday` / `weekend` are filled in.
 
-### Changing the tasting menu each quarter
+### The shared page ending
 
-`/menus` carries no current-menu content, so a new chapter is one object at the
-top of `menuArchive` in `data/menus.ts`:
+`<GlobalLocation />` and `<SiteFooter />` are rendered once, in
+`app/layout.tsx` — never add them to a page. Each page supplies its own single
+closing CTA above them with `<NextPage>` (the homepage uses its visit teaser).
+
+The map is MINIBÉ's own drawn plate by default: on brand, weighs nothing, and
+the whole plate links to Google Maps. To put a live Google map over it, set
+`mapEmbed: true` in `data/contact.ts` — the embed is then requested only when
+the foot of the page is within reach, and the plate stays underneath if it
+fails to load. Check it renders on the production domain before switching it on.
+
+Privacy and Terms links are deliberately absent: those pages do not exist, and
+the footer never carries a dead link.
+
+### Contact details and services
+
+Everything lives in `data/contact.ts` and nothing is hard-coded in a component:
 
 ```ts
-{ id: "next", name: "…", dates: "Dec 2026 – Feb 2027", status: "current",
-  note: null, courses: null, image: null }
+email:    "Minibeblr@gmail.com",   // → mailto
+whatsapp: "917676347995",          // digits + country code → wa.me
+phone:    "919840236400",          // digits + country code → tel:
 ```
 
-…and set the previous entry to `status: "past"`. The tasting-menu section names
-the current chapter from this list; add a `courses` array (and an `image`) and
-its archive panel fills out. No layout changes, ever.
+`phoneDisplay`, `whatsappDisplay`, `phoneHref`, `emailHref` and `waLink()`
+derive every rendered form from those three values, so the display format and
+the dial format can never drift apart.
 
-**Swiss Roll:** the two supplied Mosaic PDFs print different components for
-course 03. Both are stored unmerged under `variants`; while `activeVariant` is
-`null` the site shows both, separated by "or". Set it to `"a"` or `"b"` once
-MINIBÉ confirms.
+The five services (Corporate Orders, Private Catering, Grazing Table, Wedding
+Cakes, Workshop) are listed in `contact.services`, each with its own pre-written
+WhatsApp enquiry. They appear on `/contact#services` and in the footer — they
+are not routes, and no descriptions, prices or capacities are invented.
 
 ### Turning the enquiry form on
 
@@ -91,15 +116,16 @@ email:    "hello@minibe.in", // → mailto, message pre-written
 formEndpoint: "https://…",   // → POST JSON (Formspree, Getform, your own)
 ```
 
-`phone` adds a Call row. Priority is endpoint → WhatsApp → email. The same
-number powers the WhatsApp buttons on `/menus` and the catering block on
-`/contact`, using the templates in `contact.waMessages`.
+Priority is endpoint → WhatsApp → email. With WhatsApp configured (it is), the
+form opens WhatsApp with the enquiry pre-written; add `formEndpoint` to POST it
+to a service instead. Nothing ever claims to send that does not.
 
 ### Adding a page
 
-Add a route folder under `app/`, export `metadata`, open with `<PageHeader>`
-and close with `<NextPage>`, then add the route to `site.nav`. A catering page,
-for example, would need nothing else.
+Add a route folder under `app/`, export `metadata`, add a chapter to
+`site.chapters` and the route to `site.nav`, then open the page with
+`<PageHeader chapter={chapter("id")}>` and close it with `<NextPage>`.
+Pages look their folio up by id, so chapter order can change safely.
 
 ### Photography
 
@@ -111,14 +137,17 @@ Mosaic menu. Replace files in `public/images/photos/` and update
 
 ```
 app/
-  layout.tsx       fonts, metadata, JSON-LD, Navbar + Footer + sticky CTA
+  layout.tsx       fonts, metadata, JSON-LD, Navbar + shared ending + sticky CTA
   template.tsx     route transition
   page.tsx         Home — keep it short
-  experience|menus|story|space|contact/page.tsx
+  experience|story|space|contact/page.tsx
 components/
-  layout/          Navbar, MobileMenu, MobileCta, Footer
+  layout/          Navbar, MobileMenu, MobileCta
+  site/            GlobalLocation, LocationMap, SiteFooter, FooterContact,
+                   FooterServices, FooterSocial, FooterLinks, ContactChannels,
+                   Services — the ending shared by every page, plus contact
   home/            Hero, TwoWaysTeaser, BrandTeaser, VisitTeaser (homepage only)
-  sections/        TastingMenu, ALaCarte, MenuArchive, Journey
+  sections/        Journey (the Andaman → Bengaluru passage)
   ui/              PageHeader, NextPage, Button, MagneticButton, ImageReveal,
                    WordReveal, Reveal, Parallax, ChapterMarker, Eyebrow, Logo,
                    Cursor, AllergenChips, EnquiryForm
@@ -142,6 +171,19 @@ display type on paper (3.2:1), `orange-deep` for small text (5.5:1).
 Each page has its own rhythm — Home cinematic, Experience typographic, Menus a
 catalogue, Story a midnight magazine, Space photography-led, Contact practical
 — built from the same components and tokens.
+
+## Responsive
+
+Mobile is a design target, not a fallback. Checked at 320 · 360 · 375 · 390 ·
+414 · 430 · 768 · 1024 · 1280 · 1440 · 1920: no horizontal overflow, no clipped
+headings, tap targets at least 40px in the header, footer, services and form.
+
+Layouts change rather than shrink: the Andaman → Bengaluru passage is a pinned
+horizontal track on large screens and a vertical timeline on phones; the Space
+gallery is an art-directed grid on desktop and a swipeable strip on mobile;
+service rows put a full-width "Enquire on WhatsApp" target under each name on
+narrow screens. Nothing depends on hover — the custom cursor and magnetic
+buttons are fine-pointer only.
 
 ## Motion & accessibility
 

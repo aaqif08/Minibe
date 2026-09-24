@@ -54,12 +54,6 @@ export const images = {
     width: 1516,
     height: 2278,
   },
-  mosaicArt: {
-    src: "/images/photos/mosaic-artwork.jpg",
-    alt: "",
-    width: 949,
-    height: 1343,
-  },
 } satisfies Record<string, SiteImage>;
 
 export type ImageKey = keyof typeof images;

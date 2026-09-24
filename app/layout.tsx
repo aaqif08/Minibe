@@ -4,7 +4,8 @@ import { site } from "@/data/site";
 import { contact } from "@/data/contact";
 import { SmoothScroll } from "@/components/providers/SmoothScroll";
 import { Navbar } from "@/components/layout/Navbar";
-import { Footer } from "@/components/layout/Footer";
+import { GlobalLocation } from "@/components/site/GlobalLocation";
+import { SiteFooter } from "@/components/site/SiteFooter";
 import { MobileCta } from "@/components/layout/MobileCta";
 import { Cursor } from "@/components/ui/Cursor";
 import "./globals.css";
@@ -87,10 +88,19 @@ const jsonLd = {
   geo: { "@type": "GeoCoordinates", latitude: site.geo.lat, longitude: site.geo.lng },
   hasMap: site.links.maps,
   sameAs: [site.links.instagram, site.links.maps],
-  ...(contact.phone ? { telephone: contact.phone } : {}),
-  ...(site.hours.schedule?.length
+  ...(contact.phone ? { telephone: `+${contact.phone}` } : {}),
+  ...(contact.email ? { email: contact.email } : {}),
+  ...(contact.services.length
     ? {
-        openingHoursSpecification: site.hours.schedule.map((h) => ({
+        makesOffer: contact.services.map((s) => ({
+          "@type": "Offer",
+          itemOffered: { "@type": "Service", name: s.name },
+        })),
+      }
+    : {}),
+  ...(contact.timings.schedule?.length
+    ? {
+        openingHoursSpecification: contact.timings.schedule.map((h) => ({
           "@type": "OpeningHoursSpecification",
           dayOfWeek: h.days,
           opens: h.open,
@@ -127,7 +137,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <main id="main" className="flex-1">
             {children}
           </main>
-          <Footer />
+          <GlobalLocation />
+          <SiteFooter />
           <MobileCta />
         </SmoothScroll>
         <Cursor />

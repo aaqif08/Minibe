@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { site } from "@/data/site";
+import { site, chapter } from "@/data/site";
 import { gallery, spaceCopy, type GalleryItem } from "@/data/gallery";
 import { social } from "@/data/social";
 import { images } from "@/data/images";
@@ -31,12 +31,12 @@ const ROLE: Record<GalleryItem["role"], { cell: string; aspect: string; position
 
 /** /space — photography-led, with a short note on where to sit. */
 export default function SpacePage() {
-  const chapter = site.chapters[3];
+  const page = chapter("space");
 
   return (
     <>
       <PageHeader
-        chapter={chapter}
+        chapter={page}
         title={spaceCopy.title}
         lede={spaceCopy.lede}
         titleClassName="text-orange-ink"
@@ -176,9 +176,9 @@ export default function SpacePage() {
 
       <NextPage
         href="/contact"
-        label="Let's talk dessert"
+        label="Come visit us"
         note="Reserve a table, ask what's on the tasting menu, or plan something private."
-        className="pb-section-sm"
+        className="pb-4"
       />
     </>
   );
