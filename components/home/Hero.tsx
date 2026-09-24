@@ -1,10 +1,10 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef } from "react";
 import { site } from "@/data/site";
 import { images } from "@/data/images";
 import { useGsap } from "@/lib/motion";
-import { useScroll } from "@/components/providers/SmoothScroll";
 import { ImageReveal } from "@/components/ui/ImageReveal";
 import { WordReveal } from "@/components/ui/WordReveal";
 import { Button } from "@/components/ui/Button";
@@ -12,18 +12,16 @@ import { Logo } from "@/components/ui/Logo";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 
 /**
- * Cover. Paper on the left, Chef Jenny bleeding off the right and bottom.
+ * The cover. Paper on the left, Chef Jenny bleeding off the right and bottom.
  * The headline runs across the photo edge and switches from indigo to paper
  * exactly where the photograph begins (two clipped copies of the same text).
- * Everything a first-time visitor needs — what MINIBÉ is, the two formats,
- * and how to get in touch — is visible without scrolling.
+ * One viewport, nothing more — the rest of the site lives on its own pages.
  */
 export function Hero() {
   const ref = useRef<HTMLElement>(null);
   const photoRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
   const headRef = useRef<HTMLSpanElement>(null);
-  const { scrollTo } = useScroll();
 
   // Keep the duotone split aligned to the photo's left edge.
   useEffect(() => {
@@ -65,7 +63,6 @@ export function Hero() {
 
   return (
     <section ref={ref} id="top" className="relative isolate min-h-svh overflow-hidden bg-paper" aria-labelledby="hero-title">
-      {/* Photograph — bleeds right + bottom on desktop, fills the frame on mobile */}
       <div
         ref={photoRef}
         className="absolute inset-x-0 bottom-0 top-20 md:top-24 lg:left-auto lg:right-0 lg:w-[52%] xl:w-[54%]"
@@ -86,7 +83,6 @@ export function Hero() {
         />
       </div>
 
-      {/* Vertical editorial label — desktop */}
       <p aria-hidden className="vertical-text t-eyebrow absolute bottom-10 left-6 hidden rotate-180 text-ink/50 xl:block">
         {site.offer}
       </p>
@@ -142,38 +138,22 @@ export function Hero() {
               </span>
             </h1>
 
-            <p className="mt-5 font-display text-xl font-light text-paper lg:mt-6 lg:text-[1.6rem] lg:text-indigo">
+            <p className="mt-4 t-eyebrow text-paper/80 lg:mt-6 lg:text-ink/70">{site.by}</p>
+            <p className="mt-4 font-display text-xl font-light text-paper lg:mt-5 lg:text-[1.6rem] lg:text-indigo">
               {site.offer}
             </p>
           </div>
 
           {/* Kept inside the paper column on desktop so nothing sits on the photograph */}
-          <div className="mt-9 flex flex-col gap-7 lg:mt-0 lg:w-[46%] lg:max-w-xl">
+          <div className="mt-9 flex flex-col gap-6 lg:mt-0 lg:w-[46%] lg:max-w-xl">
             <p className="t-body-sm text-paper/90 lg:text-ink-soft">{site.intro}</p>
-
             <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
-              <Button
-                href="#contact"
-                variant="primary"
-                size="lg"
-                cursor="reserve"
-                onClick={(e) => {
-                  e.preventDefault();
-                  scrollTo("#contact", { offset: -64 });
-                }}
-              >
-                {site.cta.primary}
+              <Button href="/experience" variant="primary" size="lg">
+                {site.cta.explore}
               </Button>
-              <a
-                href="#experience"
-                onClick={(e) => {
-                  e.preventDefault();
-                  scrollTo("#experience", { offset: -64 });
-                }}
-                className="t-eyebrow link-underline text-paper/80 lg:text-ink/70"
-              >
-                {site.cta.explore} ↓
-              </a>
+              <Link href="/contact" className="t-eyebrow link-underline text-paper/80 lg:text-ink/70">
+                {site.cta.primary} →
+              </Link>
             </div>
           </div>
         </div>

@@ -58,42 +58,41 @@ export const site = {
 
   cta: {
     /** Header + sticky CTA. Deliberately not menu-specific, because the menu changes. */
-    primary: "Plan your visit",
-    secondary: "Get in touch",
+    primary: "Get in touch",
     explore: "Explore MINIBÉ",
-    reserve: "Reserve a table",
+    reserve: "Reserve",
+    reserveLong: "Reserve a table",
     directions: "Get directions",
     maps: "Open in Google Maps",
     aLaCarte: "View à la carte",
     archive: "View menu archive",
   },
 
-  /** Editorial chapter numbering, carried over from the brand portfolio. */
+  /**
+   * Editorial numbering, carried over from the brand portfolio. Each page
+   * opens with its own folio, so the numbering reads across the site.
+   */
   chapters: [
-    { id: "experience", number: "01", title: "The experience" },
-    { id: "menus", number: "02", title: "The menus" },
-    { id: "archive", number: "03", title: "The archive" },
-    { id: "ingredient", number: "04", title: "The ingredient" },
-    { id: "story", number: "05", title: "Our story" },
-    { id: "space", number: "06", title: "The space" },
-    { id: "contact", number: "07", title: "Let's talk dessert" },
+    { id: "experience", number: "01", title: "The experience", href: "/experience" },
+    { id: "menus", number: "02", title: "The menus", href: "/menus" },
+    { id: "story", number: "03", title: "Our story", href: "/story" },
+    { id: "space", number: "04", title: "The space", href: "/space" },
+    { id: "contact", number: "05", title: "Let's talk dessert", href: "/contact" },
   ],
 
+  /**
+   * Routes whose masthead sits on a dark ground — the header renders in
+   * paper until the page scrolls and the bar picks up its own background.
+   */
+  darkTopRoutes: ["/story", "/contact"],
+
+  /** Real routes — every header item is its own page. */
   nav: [
-    { label: "Home", href: "#top" },
-    { label: "The Experience", href: "#experience" },
-    {
-      label: "Menus",
-      href: "#menus",
-      children: [
-        { label: "The Tasting Menu", href: "#tasting-menu" },
-        { label: "The À La Carte", href: "#a-la-carte" },
-        { label: "The Menu Archive", href: "#archive" },
-      ],
-    },
-    { label: "Our Story", href: "#story" },
-    { label: "Space", href: "#space" },
-    { label: "Contact", href: "#contact" },
+    { label: "The Experience", href: "/experience" },
+    { label: "Menus", href: "/menus" },
+    { label: "Our Story", href: "/story" },
+    { label: "Space", href: "/space" },
+    { label: "Contact", href: "/contact" },
   ],
 
   closingLine: "Dessert, with a story to tell.",

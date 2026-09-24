@@ -38,7 +38,15 @@ export const contact = {
     { id: "tasting", label: "Tasting Menu" },
     { id: "a-la-carte", label: "À La Carte" },
     { id: "private", label: "Private Dining / Events" },
+    { id: "catering", label: "Catering" },
   ] as EnquiryInterest[],
+
+  /** Pre-written WhatsApp openers. Used only once `whatsapp` is filled in. */
+  waMessages: {
+    visit: "Hi MINIBÉ, I'd like to enquire about a visit.",
+    catering: "Hi MINIBÉ, I'd like to enquire about catering / a private event.",
+    current: "Hi MINIBÉ, I'd like to know what's currently on the tasting menu.",
+  },
 
   successMessage: "Thank you — we'll be in touch about what's currently on the table.",
   errorMessage: "That didn't send. Please try again, or reach us on Instagram.",
@@ -46,6 +54,12 @@ export const contact = {
 
 /** Which submit route the form will take, given what is configured. */
 export type SubmitRoute = "endpoint" | "whatsapp" | "email" | "none";
+
+/** Build a wa.me link with a pre-written message. Null when no number is set. */
+export function waLink(message: string): string | null {
+  if (!contact.whatsapp) return null;
+  return `https://wa.me/${contact.whatsapp}?text=${encodeURIComponent(message)}`;
+}
 
 export function submitRoute(): SubmitRoute {
   if (contact.formEndpoint) return "endpoint";

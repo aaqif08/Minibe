@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { site } from "@/data/site";
 import { cn } from "@/lib/cn";
@@ -7,16 +9,13 @@ import { useScroll } from "@/components/providers/SmoothScroll";
 import { Logo } from "@/components/ui/Logo";
 import { Button } from "@/components/ui/Button";
 
-type Props = {
-  open: boolean;
-  onClose: () => void;
-  onNavigate: (href: string) => (e: React.MouseEvent<HTMLAnchorElement>) => void;
-};
+type Props = { open: boolean; onClose: () => void };
 
 /** Full-screen indigo menu for small screens. Locks scrolling while open. */
-export function MobileMenu({ open, onClose, onNavigate }: Props) {
+export function MobileMenu({ open, onClose }: Props) {
   const { stop, start } = useScroll();
   const closeRef = useRef<HTMLButtonElement>(null);
+  const pathname = usePathname();
 
   useEffect(() => {
     if (!open) return;
@@ -32,10 +31,7 @@ export function MobileMenu({ open, onClose, onNavigate }: Props) {
     };
   }, [open, onClose, stop, start]);
 
-  const links = site.nav.flatMap((item, i) => [
-    { label: item.label, href: item.href, child: false, index: i + 1 },
-    ...(item.children ?? []).map((c) => ({ label: c.label, href: c.href, child: true, index: 0 })),
-  ]);
+  const links = [{ label: "Home", href: "/" }, ...site.nav];
 
   return (
     <div
@@ -66,35 +62,32 @@ export function MobileMenu({ open, onClose, onNavigate }: Props) {
       </div>
 
       <nav aria-label="Mobile" className="wrap flex flex-1 flex-col justify-center gap-1 py-6">
-        {links.map((item, i) => (
-          <a
-            key={item.label}
-            href={item.href}
-            onClick={onNavigate(item.href)}
-            tabIndex={open ? 0 : -1}
-            className={cn(
-              "flex items-baseline gap-4 py-1.5 transition-transform duration-700 ease-[var(--ease-expo)]",
-              item.child ? "pl-11 font-display text-2xl text-paper/70" : "font-display text-[2.75rem] leading-none",
-              open ? "translate-y-0" : "translate-y-6",
-            )}
-            style={{ transitionDelay: open ? `${120 + i * 45}ms` : "0ms" }}
-          >
-            {!item.child ? <span className="t-eyebrow w-7 text-orange">0{item.index}</span> : null}
-            {item.label}
-          </a>
-        ))}
+        {links.map((item, i) => {
+          const active = pathname === item.href;
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              onClick={onClose}
+              tabIndex={open ? 0 : -1}
+              aria-current={active ? "page" : undefined}
+              className={cn(
+                "flex items-baseline gap-4 py-1.5 font-display text-[2.5rem] leading-none transition-transform duration-700 ease-[var(--ease-expo)]",
+                active ? "text-orange" : "text-paper",
+                open ? "translate-y-0" : "translate-y-6",
+              )}
+              style={{ transitionDelay: open ? `${120 + i * 45}ms` : "0ms" }}
+            >
+              <span className="t-eyebrow w-7 text-orange">0{i + 1}</span>
+              {item.label}
+            </Link>
+          );
+        })}
       </nav>
 
       <div className="wrap flex flex-col gap-6 pb-10">
-        <Button
-          href="#contact"
-          variant="primary"
-          size="lg"
-          magnetic={false}
-          onClick={onNavigate("#contact")}
-          className="w-full"
-        >
-          {site.cta.primary}
+        <Button href={site.links.reserve} external variant="primary" size="lg" magnetic={false} className="w-full">
+          {site.cta.reserveLong}
         </Button>
         <div className="flex items-center justify-between t-eyebrow text-paper/70">
           <a href={site.links.instagram} target="_blank" rel="noopener noreferrer" className="link-underline">

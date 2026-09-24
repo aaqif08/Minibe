@@ -1,85 +1,81 @@
+import type { Metadata } from "next";
 import { site } from "@/data/site";
-import { contact, submitRoute } from "@/data/contact";
-import { ChapterMarker } from "@/components/ui/ChapterMarker";
-import { WordReveal } from "@/components/ui/WordReveal";
+import { contact, submitRoute, waLink } from "@/data/contact";
+import { PageHeader } from "@/components/ui/PageHeader";
 import { Reveal } from "@/components/ui/Reveal";
 import { Button } from "@/components/ui/Button";
 import { Logo } from "@/components/ui/Logo";
 import { EnquiryForm } from "@/components/ui/EnquiryForm";
 
+export const metadata: Metadata = {
+  title: "Contact",
+  description:
+    "Reserve a table at MINIBÉ, ask what's currently on the tasting menu, or enquire about private dining, events and catering in Bengaluru.",
+  alternates: { canonical: "/contact" },
+};
+
 type Channel = { label: string; value: string; href: string; external?: boolean };
 
-/**
- * Chapter 07 — Let's talk dessert. The enquiry form (when a channel is
- * configured), the direct channels MINIBÉ actually publishes, and where to
- * find the room. Everything a visitor might want to do, in one place.
- */
-export function Contact() {
-  const chapter = site.chapters[6];
+/** /contact — a practical enquiry page: form, direct channels, and the address. */
+export default function ContactPage() {
+  const chapter = site.chapters[4];
   const { address, geo, hours } = site;
   const lat = `${Math.abs(geo.lat).toFixed(4)}° ${geo.lat >= 0 ? "N" : "S"}`;
   const lng = `${Math.abs(geo.lng).toFixed(4)}° ${geo.lng >= 0 ? "E" : "W"}`;
   const hasForm = submitRoute() !== "none";
-
+  const waVisit = waLink(contact.waMessages.visit);
+  const waCatering = waLink(contact.waMessages.catering);
 
   // Only channels MINIBÉ has actually published are rendered.
   const channels: Channel[] = [
-    contact.whatsapp
-      ? { label: "WhatsApp", value: "Message us", href: `https://wa.me/${contact.whatsapp}`, external: true }
-      : null,
+    waVisit ? { label: "WhatsApp", value: "Message us", href: waVisit, external: true } : null,
     contact.phone ? { label: "Call", value: contact.phone, href: `tel:${contact.phone.replace(/\s+/g, "")}` } : null,
     contact.email ? { label: "Email", value: contact.email, href: `mailto:${contact.email}` } : null,
-    {
-      label: "Instagram",
-      value: site.links.instagramHandle,
-      href: site.links.instagram,
-      external: true,
-    },
+    { label: "Instagram", value: site.links.instagramHandle, href: site.links.instagram, external: true },
     { label: "Reserve", value: "Book a table online", href: site.links.reserve, external: true },
+    { label: "Directions", value: "Kodihalli, Bengaluru", href: site.links.maps, external: true },
   ].filter(Boolean) as Channel[];
 
   return (
-    <section
-      id="contact"
-      data-chapter="contact"
-      data-theme="dark"
-      className="relative isolate overflow-hidden bg-indigo text-paper"
-      aria-labelledby="contact-title"
-    >
-      {/* Ghosted monogram */}
-      <div aria-hidden className="pointer-events-none absolute -right-[10%] top-1/3 -z-10 w-[46vw] opacity-[0.06]">
-        <Logo variant="monogram" tone="white" width={900} className="w-full" />
-      </div>
+    <div className="bg-indigo text-paper">
+      <PageHeader
+        chapter={chapter}
+        title={contact.heading}
+        lede={hasForm ? contact.lede : contact.ledeFallback}
+        light
+        titleClassName="text-paper"
+      >
+        <ul className="t-body-sm grid gap-1.5 text-paper/70">
+          <li>Want to visit?</li>
+          <li>Want to know what&apos;s currently on the table?</li>
+          <li>Planning a celebration, private dining or catering?</li>
+        </ul>
+      </PageHeader>
 
-      <div className="wrap py-section-sm md:py-section">
-        <ChapterMarker chapter={chapter} light />
-
-        <div className="mt-16 grid grid-cols-12 gap-x-6 gap-y-10 md:mt-24">
-          <div className="col-span-12 lg:col-span-7">
-            <WordReveal as="h2" id="contact-title" text={contact.heading} className="t-display text-paper" />
-          </div>
-          <Reveal className="col-span-12 flex items-end md:col-span-9 lg:col-span-5 lg:col-start-8">
-            <p className="t-lead text-paper/85">{hasForm ? contact.lede : contact.ledeFallback}</p>
-          </Reveal>
+      <div className="relative isolate overflow-hidden">
+        {/* Ghosted monogram */}
+        <div aria-hidden className="pointer-events-none absolute -right-[10%] top-1/4 -z-10 w-[46vw] opacity-[0.06]">
+          <Logo variant="monogram" tone="white" width={900} className="w-full" />
         </div>
 
-        <div className="mt-16 grid grid-cols-12 gap-x-6 gap-y-16 md:mt-24">
+        <div className="wrap grid grid-cols-12 gap-x-6 gap-y-16 py-section-sm md:py-section">
           {/* Enquiry */}
           <Reveal className="col-span-12 lg:col-span-6">
             {hasForm ? (
               <>
-                <h3 className="t-eyebrow mb-10 text-orange">{contact.formTitle}</h3>
+                <h2 className="t-eyebrow mb-10 text-orange">{contact.formTitle}</h2>
                 <EnquiryForm />
               </>
             ) : (
+              /* No enquiry channel configured yet — see data/contact.ts. */
               <>
-                <h3 className="t-title max-w-md text-paper">Tell us what you&apos;re after and we&apos;ll take it from there.</h3>
-                <p className="t-body mt-5 max-w-md text-paper/70">
-                  Tasting menu, à la carte or private dining — message us on Instagram, or book a table online.
+                <h2 className="t-title max-w-md text-paper">Tell us what you&apos;re after and we&apos;ll take it from there.</h2>
+                <p className="t-body mt-5 max-w-md text-paper/75">
+                  Tasting menu, à la carte, private dining or catering — message us on Instagram, or book a table online.
                 </p>
                 <div className="mt-9 flex flex-wrap items-center gap-x-8 gap-y-4">
                   <Button href={site.links.reserve} external variant="primary" size="lg" cursor="reserve">
-                    {site.cta.reserve}
+                    {site.cta.reserveLong}
                   </Button>
                   <Button href={site.links.instagram} external variant="text-light">
                     Message us on Instagram
@@ -87,12 +83,31 @@ export function Contact() {
                 </div>
               </>
             )}
+
+            {/* Private dining + catering */}
+            <div className="hairline-light mt-16 pt-8">
+              <h2 className="t-eyebrow text-paper/60">Private dining, events & catering</h2>
+              <p className="t-lead mt-4 max-w-md text-paper/90">
+                MINIBÉ also takes catering, party orders and private events.
+              </p>
+              <div className="mt-6 flex flex-wrap items-center gap-x-8 gap-y-4">
+                {waCatering ? (
+                  <Button href={waCatering} external variant="outline-light">
+                    Enquire on WhatsApp
+                  </Button>
+                ) : (
+                  <Button href={site.links.instagram} external variant="outline-light">
+                    Enquire on Instagram
+                  </Button>
+                )}
+              </div>
+            </div>
           </Reveal>
 
           {/* Direct channels + where to find us */}
           <div className="col-span-12 lg:col-span-5 lg:col-start-8">
             <Reveal>
-              <h3 className="t-eyebrow text-paper/50">Or talk to us directly</h3>
+              <h2 className="t-eyebrow text-paper/60">Or talk to us directly</h2>
               <ul className="mt-6 grid">
                 {channels.map((c) => (
                   <li key={c.label} className="hairline-light">
@@ -105,7 +120,7 @@ export function Contact() {
                       <span className="font-display text-2xl text-paper transition-colors duration-500 group-hover:text-orange">
                         {c.label}
                       </span>
-                      <span className="t-body-sm text-right text-paper/60">{c.value}</span>
+                      <span className="t-body-sm text-right text-paper/70">{c.value}</span>
                     </a>
                   </li>
                 ))}
@@ -113,7 +128,7 @@ export function Contact() {
             </Reveal>
 
             <Reveal className="mt-14" delay={0.1}>
-              <h3 className="t-eyebrow text-paper/50">Find us</h3>
+              <h2 className="t-eyebrow text-paper/60">Find us</h2>
               <address className="mt-5 font-display text-[1.5rem] font-light not-italic leading-snug text-paper md:text-[1.75rem]">
                 {address.line1}
                 <br />
@@ -122,9 +137,9 @@ export function Contact() {
                 {address.city}, {address.region} {address.postalCode}
               </address>
 
-              <dl className="mt-7 grid gap-3 t-body-sm text-paper/70">
+              <dl className="mt-7 grid gap-3 t-body-sm text-paper/75">
                 <div className="grid grid-cols-[5.5rem_1fr] gap-4">
-                  <dt className="t-eyebrow pt-1 text-paper/45">Hours</dt>
+                  <dt className="t-eyebrow pt-1 text-paper/50">Hours</dt>
                   <dd>
                     {hours.schedule?.length ? (
                       <ul className="grid gap-1">
@@ -138,11 +153,11 @@ export function Contact() {
                         ))}
                       </ul>
                     ) : null}
-                    <p className={hours.schedule?.length ? "mt-1 text-paper/50" : undefined}>{hours.note}</p>
+                    <p className={hours.schedule?.length ? "mt-1 text-paper/55" : undefined}>{hours.note}</p>
                   </dd>
                 </div>
                 <div className="grid grid-cols-[5.5rem_1fr] gap-4">
-                  <dt className="t-eyebrow pt-1 text-paper/45">Coords</dt>
+                  <dt className="t-eyebrow pt-1 text-paper/50">Coords</dt>
                   <dd className="tabular-nums">
                     {lat} · {lng}
                   </dd>
@@ -169,7 +184,7 @@ export function Contact() {
                     <animate attributeName="r" values="10;22;10" dur="3.5s" repeatCount="indefinite" />
                     <animate attributeName="stroke-opacity" values="0.5;0;0.5" dur="3.5s" repeatCount="indefinite" />
                   </circle>
-                  <text x="422" y="218" fontFamily="var(--font-sans)" fontSize="11" letterSpacing="2.5" fill="currentColor" opacity="0.7">
+                  <text x="422" y="218" fontFamily="var(--font-sans)" fontSize="11" letterSpacing="2.5" fill="currentColor" opacity="0.75">
                     80 FEET ROAD
                   </text>
                 </svg>
@@ -179,6 +194,6 @@ export function Contact() {
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 }

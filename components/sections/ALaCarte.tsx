@@ -31,13 +31,13 @@ export function ALaCarte() {
   }, [items]);
 
   return (
-    <div id="a-la-carte" className="scroll-mt-20">
+    <section id="a-la-carte" className="wrap scroll-mt-24 py-section-sm md:py-section" aria-labelledby="a-la-carte-title">
       <header className="grid grid-cols-12 gap-x-6 gap-y-6">
         <div className="col-span-12 lg:col-span-6">
           <Eyebrow rule className="text-orange-deep">
             Plated desserts · Savoury · Bakes · Beverages
           </Eyebrow>
-          <WordReveal as="h3" id="a-la-carte-title" text={menu.title} className="t-section mt-6 text-indigo" />
+          <WordReveal as="h2" id="a-la-carte-title" text={menu.title} className="t-section mt-6 text-indigo" />
         </div>
         <Reveal className="col-span-12 flex items-end lg:col-span-5 lg:col-start-8">
           <p className="t-quote text-ink-soft">{menu.subtitle}</p>
@@ -91,7 +91,7 @@ export function ALaCarte() {
           </Reveal>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
 

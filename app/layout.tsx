@@ -3,6 +3,9 @@ import { IBM_Plex_Serif, Manrope } from "next/font/google";
 import { site } from "@/data/site";
 import { contact } from "@/data/contact";
 import { SmoothScroll } from "@/components/providers/SmoothScroll";
+import { Navbar } from "@/components/layout/Navbar";
+import { Footer } from "@/components/layout/Footer";
+import { MobileCta } from "@/components/layout/MobileCta";
 import { Cursor } from "@/components/ui/Cursor";
 import "./globals.css";
 
@@ -119,7 +122,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           Skip to content
         </a>
-        <SmoothScroll>{children}</SmoothScroll>
+        <SmoothScroll>
+          <Navbar />
+          <main id="main" className="flex-1">
+            {children}
+          </main>
+          <Footer />
+          <MobileCta />
+        </SmoothScroll>
         <Cursor />
         <div className="grain" aria-hidden />
       </body>

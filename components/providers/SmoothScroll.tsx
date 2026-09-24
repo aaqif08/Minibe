@@ -1,6 +1,7 @@
 "use client";
 
 import type Lenis from "lenis";
+import { usePathname } from "next/navigation";
 import { createContext, useCallback, useContext, useEffect, useRef, type ReactNode } from "react";
 import { loadGsap } from "@/lib/gsap";
 import { prefersReducedMotion } from "@/lib/motion";
@@ -27,6 +28,7 @@ export function useScroll() {
  */
 export function SmoothScroll({ children }: { children: ReactNode }) {
   const lenisRef = useRef<Lenis | null>(null);
+  const pathname = usePathname();
 
   useEffect(() => {
     const reduced = prefersReducedMotion();
@@ -89,6 +91,18 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
       window.scrollTo({ top: target, behavior: "smooth" });
     }
   }, []);
+
+  // Every route starts at the top, with fresh ScrollTrigger measurements for
+  // the new page's pinned and scrubbed sections.
+  useEffect(() => {
+    lenisRef.current?.scrollTo(0, { immediate: true });
+    window.scrollTo(0, 0);
+    let raf = 0;
+    loadGsap().then(({ ScrollTrigger }) => {
+      raf = requestAnimationFrame(() => ScrollTrigger.refresh());
+    });
+    return () => cancelAnimationFrame(raf);
+  }, [pathname]);
 
   const stop = useCallback(() => lenisRef.current?.stop(), []);
   const start = useCallback(() => lenisRef.current?.start(), []);

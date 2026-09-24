@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { ReactNode } from "react";
 import { cn } from "@/lib/cn";
 import { MagneticButton } from "./MagneticButton";
@@ -49,7 +50,8 @@ function Arrow({ className }: { className?: string }) {
 }
 
 /**
- * Site-wide link button. External links open in a new tab with safe rel.
+ * Site-wide link button. Internal hrefs route through next/link (same tab,
+ * client navigation); external ones open in a new tab with a safe rel.
  * Text variants render an animated underline instead of a filled pill.
  */
 export function Button({
@@ -65,7 +67,20 @@ export function Button({
   ...rest
 }: Props) {
   const isText = variant === "text" || variant === "text-light";
-  const anchor = (
+  const isInternal = !external && href.startsWith("/");
+  const classes = cn(base, !isText && sizes[size], variants[variant], className);
+  const inner = (
+    <>
+      <span>{children}</span>
+      <Arrow />
+    </>
+  );
+
+  const anchor = isInternal ? (
+    <Link href={href} onClick={onClick} data-cursor={cursor} aria-label={rest["aria-label"]} className={classes}>
+      {inner}
+    </Link>
+  ) : (
     <a
       href={href}
       onClick={onClick}
@@ -73,10 +88,9 @@ export function Button({
       rel={external ? "noopener noreferrer" : undefined}
       data-cursor={cursor}
       aria-label={rest["aria-label"]}
-      className={cn(base, !isText && sizes[size], variants[variant], className)}
+      className={classes}
     >
-      <span>{children}</span>
-      <Arrow />
+      {inner}
     </a>
   );
 

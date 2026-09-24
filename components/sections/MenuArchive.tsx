@@ -2,11 +2,9 @@
 
 import Image from "next/image";
 import { useRef, useState } from "react";
-import { site } from "@/data/site";
 import { menuArchive, courseComponentSets, type ArchiveEntry, type MosaicCourse } from "@/data/menus";
 import { useGsap } from "@/lib/motion";
 import { cn } from "@/lib/cn";
-import { ChapterMarker } from "@/components/ui/ChapterMarker";
 import { WordReveal } from "@/components/ui/WordReveal";
 import { Reveal } from "@/components/ui/Reveal";
 import { AllergenChips } from "@/components/ui/AllergenChips";
@@ -34,7 +32,6 @@ const DOT = {
  * is one object in data/menus.ts — the page needs no other change.
  */
 export function MenuArchive() {
-  const chapter = site.chapters[2];
   const sectionRef = useRef<HTMLElement>(null);
   const bgRef = useRef<HTMLDivElement>(null);
   const current = menuArchive.find((e) => e.status === "current");
@@ -54,7 +51,6 @@ export function MenuArchive() {
     <section
       ref={sectionRef}
       id="archive"
-      data-chapter="archive"
       data-theme="dark"
       className="relative isolate scroll-mt-16 overflow-hidden bg-mosaic-night text-paper"
       aria-labelledby="archive-title"
@@ -78,9 +74,7 @@ export function MenuArchive() {
       ) : null}
 
       <div className="wrap py-section-sm md:py-section">
-        <ChapterMarker chapter={chapter} light />
-
-        <div className="mt-16 grid grid-cols-12 gap-x-6 gap-y-8 md:mt-24">
+        <div className="grid grid-cols-12 gap-x-6 gap-y-8">
           <div className="col-span-12 lg:col-span-7">
             <WordReveal as="h2" id="archive-title" text={["The menu", "archive"]} className="t-display text-paper" />
           </div>

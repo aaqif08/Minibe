@@ -25,6 +25,7 @@
   --color-midnight: #14023f;
   --color-orange: #ff751f;
   --color-orange-deep: #a83f06; /* small text: 5.5:1 on paper, 5.0:1 on paper-deep */
+  --color-orange-ink: #e65c0d; /* display type on paper: 3.2:1 */
   --color-coral: #f0705c;
   --color-sea: #6fa39c;
   --color-sea-deep: #0f3b6e;
@@ -352,5 +353,27 @@ html.motion [data-word] {
   }
   to {
     transform: translate3d(-2%, -3%, 0) scale(1.14);
+  }
+}
+
+/* ------------------------- route transition ----------------------- */
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0);
+    clip-path: inset(0 0 3% 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    clip-path: inset(0 0 0 0);
+  }
+}
+.page-enter {
+  animation: page-enter 0.45s var(--ease-expo) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .page-enter {
+    animation: none;
   }
 }
