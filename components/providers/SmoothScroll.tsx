@@ -101,11 +101,24 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
   // Every route starts at the top, with fresh ScrollTrigger measurements for
   // the new page's pinned and scrubbed sections.
   useEffect(() => {
-    lenisRef.current?.scrollTo(0, { immediate: true });
-    window.scrollTo(0, 0);
+    // A link with a hash (e.g. /contact#services) lands on that section;
+    // anything else starts at the top.
+    const hash = window.location.hash.slice(1);
+    const target = hash ? document.getElementById(decodeURIComponent(hash)) : null;
+    const top = target ? target.getBoundingClientRect().top + window.scrollY - 88 : 0;
+    lenisRef.current?.scrollTo(top, { immediate: true });
+    window.scrollTo(0, top);
     let raf = 0;
     loadGsap().then(({ ScrollTrigger }) => {
-      raf = requestAnimationFrame(() => ScrollTrigger.refresh());
+      raf = requestAnimationFrame(() => {
+        ScrollTrigger.refresh();
+        // Layout can settle after the refresh (pins, fonts) — re-align once.
+        if (target) {
+          const y = target.getBoundingClientRect().top + window.scrollY - 88;
+          lenisRef.current?.scrollTo(y, { immediate: true });
+          window.scrollTo(0, y);
+        }
+      });
     });
     return () => cancelAnimationFrame(raf);
   }, [pathname]);

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import Image from "next/image";
 import { site, chapter } from "@/data/site";
 import { gallery, spaceCopy, type GalleryItem } from "@/data/gallery";
@@ -11,14 +12,12 @@ import { ImageReveal } from "@/components/ui/ImageReveal";
 import { Reveal } from "@/components/ui/Reveal";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Button } from "@/components/ui/Button";
-import { Logo } from "@/components/ui/Logo";
 
-export const metadata: Metadata = {
-  title: "Space",
-  description:
-    "An intimate room in Kodihalli, Bengaluru given entirely to dessert — a blue, underwater-inspired entrance opening into coral and amber, a community table and the chef's pass.",
-  alternates: { canonical: "/space" },
-};
+export const metadata: Metadata = pageMetadata(
+  "Space",
+  "An intimate room in Kodihalli, Bengaluru given entirely to dessert — a blue, underwater-inspired entrance opening into coral and amber, a community table and the chef's pass.",
+  "/space",
+);
 
 /** Grid placement per role — art-directed, not a uniform gallery grid. */
 const ROLE: Record<GalleryItem["role"], { cell: string; aspect: string; position?: string; from?: "bottom" | "left" | "right" | "top" }> = {
@@ -32,6 +31,7 @@ const ROLE: Record<GalleryItem["role"], { cell: string; aspect: string; position
 /** /space — photography-led, with a short note on where to sit. */
 export default function SpacePage() {
   const page = chapter("space");
+  const posts = social.tiles.filter((t) => t.image);
 
   return (
     <>
@@ -149,29 +149,26 @@ export default function SpacePage() {
           </Button>
         </div>
 
-        <Reveal as="ul" stagger={0.06} className="mt-8 grid grid-cols-3 gap-2 md:grid-cols-6 md:gap-3" aria-label="Recent posts">
-          {social.tiles.map((t, i) => (
-            <li key={t.id} className="group relative aspect-square overflow-hidden bg-paper-deep">
-              {t.image ? (
+        {/* Posts render only once real images are added to data/social.ts —
+            never empty placeholder tiles. */}
+        {posts.length ? (
+          <Reveal as="ul" stagger={0.06} className="mt-8 grid grid-cols-3 gap-2 md:grid-cols-6 md:gap-3" aria-label="Recent posts">
+            {posts.map((t) => (
+              <li key={t.id} className="group relative aspect-square overflow-hidden bg-paper-deep">
                 <a href={t.href ?? social.url} target="_blank" rel="noopener noreferrer" data-cursor="view" className="block h-full w-full">
                   <Image
-                    src={t.image.src}
-                    alt={t.image.alt}
+                    src={t.image!.src}
+                    alt={t.image!.alt}
                     fill
                     sizes="(min-width: 768px) 16vw, 33vw"
                     style={{ objectFit: "cover" }}
                     className="transition-transform duration-[1.4s] ease-[var(--ease-expo)] group-hover:scale-105"
                   />
                 </a>
-              ) : (
-                <div className="absolute inset-0 flex flex-col justify-between p-3" aria-hidden>
-                  <span className="t-eyebrow text-ink/40">0{i + 1}</span>
-                  <Logo variant="monogram" tone="indigo" width={28} className="opacity-20" />
-                </div>
-              )}
-            </li>
-          ))}
-        </Reveal>
+              </li>
+            ))}
+          </Reveal>
+        ) : null}
       </section>
 
       <NextPage

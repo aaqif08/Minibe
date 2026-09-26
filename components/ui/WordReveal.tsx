@@ -50,7 +50,12 @@ export function WordReveal({
         opacity: 1,
         ease: "none",
         stagger: 0.08,
-        scrollTrigger: { trigger: el, start: "top 78%", end: "bottom 42%", scrub: 0.6 },
+        scrollTrigger: {
+          trigger: el,
+          start: "top 78%",
+          end: "bottom 42%",
+          scrub: 0.6,
+        },
       });
       return;
     }
@@ -68,24 +73,35 @@ export function WordReveal({
   return (
     <Tag ref={ref} id={id} className={cn(className)} style={style}>
       <span className="sr-only">{label}</span>
-      {lines.map((line, li) => (
-        <span key={li} aria-hidden className={cn("block", lineClassName)}>
-          {splitWords(line).map((w, wi) =>
-            /^\s+$/.test(w) ? (
-              <span key={wi}> </span>
-            ) : (
-              <span
-                key={wi}
-                className={cn("inline-block", mode === "rise" && "overflow-hidden align-bottom pb-[0.14em] -mb-[0.14em]")}
-              >
-                <span data-word className="inline-block will-change-transform">
-                  {w}
+      {/* Lines live in their own wrapper so `first:` / `last:` in lineClassName
+          address the lines themselves, not the screen-reader label above. */}
+      <span className="contents" aria-hidden>
+        {lines.map((line, li) => (
+          <span key={li} className={cn("block", lineClassName)}>
+            {splitWords(line).map((w, wi) =>
+              /^\s+$/.test(w) ? (
+                <span key={wi}> </span>
+              ) : (
+                <span
+                  key={wi}
+                  className={cn(
+                    "inline-block",
+                    mode === "rise" &&
+                      "overflow-hidden align-bottom pb-[0.14em] -mb-[0.14em]",
+                  )}
+                >
+                  <span
+                    data-word
+                    className="inline-block will-change-transform"
+                  >
+                    {w}
+                  </span>
                 </span>
-              </span>
-            ),
-          )}
-        </span>
-      ))}
+              ),
+            )}
+          </span>
+        ))}
+      </span>
     </Tag>
   );
 }

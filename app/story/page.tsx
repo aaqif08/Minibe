@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import Image from "next/image";
 import { site, chapter } from "@/data/site";
 import { story } from "@/data/story";
@@ -14,12 +15,11 @@ import { Reveal } from "@/components/ui/Reveal";
 import { Parallax } from "@/components/ui/Parallax";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 
-export const metadata: Metadata = {
-  title: "Our Story",
-  description:
-    "MINIBÉ began with Chef Jenny's childhood in the Andaman Islands and the two sisters who built it — seasonality, local producers, French technique and dessert at the centre.",
-  alternates: { canonical: "/story" },
-};
+export const metadata: Metadata = pageMetadata(
+  "Our Story",
+  "MINIBÉ began with Chef Jenny's childhood in the Andaman Islands and the two sisters who built it — seasonality, local producers, French technique and dessert at the centre.",
+  "/story",
+);
 
 /** /story — magazine-style storytelling on a midnight ground. */
 export default function StoryPage() {
@@ -52,7 +52,7 @@ export default function StoryPage() {
                 cursor="view"
               />
             </Parallax>
-            <Parallax y={-40} className="pointer-events-none absolute -left-3 -top-10 w-[42%] max-w-[260px] md:-left-8 md:-top-14">
+            <Parallax y={-40} className="pointer-events-none absolute -left-2 -top-10 w-[42%] max-w-[260px] md:-top-14 lg:-left-8">
               <Image
                 src="/images/brand/our-story-script.svg"
                 alt="Our Story — hand-lettered"

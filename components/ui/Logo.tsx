@@ -2,7 +2,7 @@ import Image from "next/image";
 import { cn } from "@/lib/cn";
 
 type Props = {
-  variant?: "wordmark" | "monogram" | "stacked";
+  variant?: "wordmark" | "monogram";
   tone?: "indigo" | "white";
   className?: string;
   priority?: boolean;
@@ -13,7 +13,6 @@ type Props = {
 const FILES = {
   wordmark: { indigo: "/images/brand/minibe-wordmark-indigo.png", white: "/images/brand/minibe-wordmark-white.png", w: 2390, h: 611 },
   monogram: { indigo: "/images/brand/minibe-monogram-indigo.png", white: "/images/brand/minibe-monogram-white.png", w: 588, h: 611 },
-  stacked: { indigo: "/images/brand/minibe-logo-stacked-indigo.png", white: "/images/brand/minibe-logo-stacked-white.png", w: 1306, h: 809 },
 };
 
 /** The MINIBÉ mark, taken directly from the brand portfolio. */

@@ -129,8 +129,7 @@ Pages look their folio up by id, so chapter order can change safely.
 
 ### Photography
 
-All photographs are MINIBÉ's own, extracted from the brand portfolio and the
-Mosaic menu. Replace files in `public/images/photos/` and update
+All photographs are MINIBÉ's own, extracted from the brand portfolio. Replace files in `public/images/photos/` and update
 `data/images.ts` (src, alt, width, height).
 
 ## Structure
@@ -161,7 +160,7 @@ docs/source/       the client-supplied PDFs and feedback document
 ## Design system
 
 Tokens live in `app/globals.css` (`@theme`): paper, indigo, orange, coral, sea,
-sand, wood, the Mosaic palette, type utilities (`t-display`, `t-hero`,
+sand, wood, type utilities (`t-display`, `t-hero`,
 `t-section`, `t-title`, `t-lead`, `t-quote`, `t-body`, `t-caption`,
 `t-eyebrow`, `t-folio`), spacing, hairlines and easings.
 

@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useRef } from "react";
 import { site } from "@/data/site";
 import { images } from "@/data/images";
@@ -12,10 +11,15 @@ import { Logo } from "@/components/ui/Logo";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 
 /**
- * The cover. Paper on the left, Chef Jenny bleeding off the right and bottom.
- * The headline runs across the photo edge and switches from indigo to paper
- * exactly where the photograph begins (two clipped copies of the same text).
- * One viewport, nothing more — the rest of the site lives on its own pages.
+ * The cover — two deliberate compositions, one set of markup.
+ *
+ * Phones: the photograph sits above the fold as its own band, cropped to keep
+ * Chef Jenny's face clear of the type, which then reads on paper underneath.
+ * Nothing is laid over her face and the long introduction stays on /experience.
+ *
+ * Large screens: paper on the left, the photograph bleeding off the right and
+ * bottom, with the headline crossing the edge and switching from indigo to
+ * paper exactly where the photograph begins (two clipped copies of the text).
  */
 export function Hero() {
   const ref = useRef<HTMLElement>(null);
@@ -23,7 +27,7 @@ export function Hero() {
   const textRef = useRef<HTMLDivElement>(null);
   const headRef = useRef<HTMLSpanElement>(null);
 
-  // Keep the duotone split aligned to the photo's left edge.
+  // Keep the duotone split aligned to the photo's left edge (large screens only).
   useEffect(() => {
     const head = headRef.current;
     const photo = photoRef.current;
@@ -45,27 +49,38 @@ export function Hero() {
   }, []);
 
   useGsap(ref, ({ gsap }, el) => {
-    const photoInner = photoRef.current?.firstElementChild as HTMLElement | null;
-    if (!photoInner) return;
-    gsap.to(photoInner, {
-      yPercent: 10,
-      scale: 1.06,
-      ease: "none",
-      scrollTrigger: { trigger: el, start: "top top", end: "bottom top", scrub: true },
+    const mm = gsap.matchMedia();
+    mm.add("(min-width: 1024px)", () => {
+      const photoInner = photoRef.current?.firstElementChild as HTMLElement | null;
+      if (photoInner) {
+        gsap.to(photoInner, {
+          yPercent: 10,
+          scale: 1.06,
+          ease: "none",
+          scrollTrigger: { trigger: el, start: "top top", end: "bottom top", scrub: true },
+        });
+      }
+      gsap.to(textRef.current, {
+        yPercent: -14,
+        opacity: 0.2,
+        ease: "none",
+        scrollTrigger: { trigger: el, start: "40% top", end: "bottom top", scrub: true },
+      });
     });
-    gsap.to(textRef.current, {
-      yPercent: -14,
-      opacity: 0.2,
-      ease: "none",
-      scrollTrigger: { trigger: el, start: "40% top", end: "bottom top", scrub: true },
-    });
+    return () => mm.revert();
   });
 
   return (
-    <section ref={ref} id="top" className="relative isolate min-h-svh overflow-hidden bg-paper" aria-labelledby="hero-title">
+    <section
+      ref={ref}
+      id="top"
+      className="relative isolate flex flex-col overflow-hidden bg-paper pt-[4.5rem] md:pt-24 lg:block lg:min-h-svh lg:pt-0"
+      aria-labelledby="hero-title"
+    >
+      {/* Photograph — its own band on phones, a bleed on large screens */}
       <div
         ref={photoRef}
-        className="absolute inset-x-0 bottom-0 top-20 md:top-24 lg:left-auto lg:right-0 lg:w-[52%] xl:w-[54%]"
+        className="relative h-[32svh] min-h-[11rem] w-full shrink-0 [@media(max-height:640px)]:h-[24svh] [@media(max-height:640px)]:min-h-[8.5rem] sm:h-[44svh] lg:absolute lg:inset-y-0 lg:left-auto lg:right-0 lg:top-24 lg:h-auto lg:w-[52%] xl:w-[54%]"
       >
         <ImageReveal
           image={images.chefPortrait}
@@ -73,13 +88,14 @@ export function Hero() {
           priority
           quality={82}
           instant
-          position="50% 22%"
-          className="h-full w-full"
+          /* Phones crop to her face; large screens keep the full standing figure. */
+          position="52% 16%"
+          className="h-full w-full lg:[&_img]:object-[50%_22%]"
         />
-        {/* Scrim for overlaid type on small screens only */}
+        {/* Melts the photograph into the paper the type sits on */}
         <div
           aria-hidden
-          className="absolute inset-0 bg-gradient-to-t from-midnight/85 via-midnight/25 to-transparent lg:hidden"
+          className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-paper via-paper/70 to-transparent lg:hidden"
         />
       </div>
 
@@ -87,10 +103,10 @@ export function Hero() {
         {site.offer}
       </p>
 
-      <div className="wrap relative flex min-h-svh flex-col pt-20 md:pt-24">
+      <div className="wrap relative flex flex-1 flex-col lg:min-h-svh lg:pt-24">
         <div
           ref={textRef}
-          className="relative z-10 flex flex-1 flex-col justify-end pb-10 text-paper lg:justify-between lg:pb-16 lg:pt-14 lg:text-ink"
+          className="relative z-10 flex flex-1 flex-col pb-8 pt-3 text-ink lg:justify-between lg:pb-16 lg:pt-14"
         >
           <div className="hidden lg:block">
             <Eyebrow rule className="text-ink/70">
@@ -99,13 +115,8 @@ export function Hero() {
           </div>
 
           <div className="lg:mt-8">
-            <div className="mb-6 lg:mb-9">
-              <span className="block lg:hidden">
-                <Logo variant="wordmark" tone="white" width={200} priority />
-              </span>
-              <span className="hidden lg:block">
-                <Logo variant="wordmark" tone="indigo" width={290} priority />
-              </span>
+            <div className="mb-9 hidden sm:block">
+              <Logo variant="wordmark" tone="indigo" width={290} priority />
             </div>
 
             <h1 id="hero-title" className="relative">
@@ -121,9 +132,9 @@ export function Hero() {
                 <WordReveal
                   as="span"
                   text={["An experiential", "dessert dining"]}
-                  className="t-hero block pb-[0.2em] text-paper lg:text-indigo"
+                  className="t-hero block pb-[0.2em] text-indigo"
                   lineClassName="first:font-light first:italic"
-                  delay={0.25}
+                  delay={0.2}
                   style={{ clipPath: "inset(0 calc(100% - var(--split)) 0 0)" }}
                 />
                 {/* Paper copy of the same words, clipped to the photo side */}
@@ -132,28 +143,36 @@ export function Hero() {
                   text={["An experiential", "dessert dining"]}
                   className="t-hero pointer-events-none absolute inset-0 hidden pb-[0.2em] text-paper lg:block"
                   lineClassName="first:font-light first:italic"
-                  delay={0.25}
+                  delay={0.2}
                   style={{ clipPath: "inset(0 0 0 var(--split))" }}
                 />
               </span>
             </h1>
 
-            <p className="mt-4 t-eyebrow text-paper/80 lg:mt-6 lg:text-ink/70">{site.by}</p>
-            <p className="mt-4 font-display text-xl font-light text-paper lg:mt-5 lg:text-[1.6rem] lg:text-indigo">
-              {site.offer}
+            <p className="t-eyebrow mt-3 text-ink/70 lg:mt-6">{site.by}</p>
+            {/* One phrase per line on phones; one line on large screens */}
+            <p className="mt-4 font-display text-[1.125rem] font-light leading-snug text-indigo lg:mt-5 lg:text-[1.6rem]">
+              {site.offerLines.map((line, i) => (
+                <span key={line} className="block lg:inline">
+                  {line}
+                  {i < site.offerLines.length - 1 ? <span className="hidden lg:inline"> </span> : null}
+                </span>
+              ))}
             </p>
           </div>
 
-          {/* Kept inside the paper column on desktop so nothing sits on the photograph */}
-          <div className="mt-9 flex flex-col gap-6 lg:mt-0 lg:w-[46%] lg:max-w-xl">
-            <p className="t-body-sm text-paper/90 lg:text-ink-soft">{site.intro}</p>
-            <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
-              <Button href="/experience" variant="primary" size="lg">
+          <div className="mt-7 flex flex-col gap-6 lg:mt-8 lg:w-[46%] lg:max-w-xl">
+            {/* The long introduction lives on /experience, not on the cover */}
+            <p className="hidden t-body-sm text-ink-soft lg:block">{site.intro}</p>
+            {/* Get in touch is the action that matters most — it leads; Explore follows.
+                Phones: two full-width, equal-height buttons. Larger screens: side by side. */}
+            <div className="grid gap-3 sm:flex sm:flex-wrap sm:items-center sm:gap-4">
+              <Button href="/contact" variant="primary" size="lg" cursor="reserve" className="w-full sm:w-auto">
+                {site.cta.primary}
+              </Button>
+              <Button href="/experience" variant="outline" size="lg" className="w-full sm:w-auto">
                 {site.cta.explore}
               </Button>
-              <Link href="/contact" className="t-eyebrow link-underline text-paper/80 lg:text-ink/70">
-                {site.cta.primary} →
-              </Link>
             </div>
           </div>
         </div>

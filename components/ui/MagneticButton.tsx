@@ -58,7 +58,7 @@ export function MagneticButton({ children, strength = 18, className }: Props) {
   }, [strength]);
 
   return (
-    <div ref={ref} className={className} style={{ display: "inline-block", padding: 10, margin: -10 }}>
+    <div ref={ref} className={className ?? "inline-block"} style={{ padding: 10, margin: -10 }}>
       {children}
     </div>
   );

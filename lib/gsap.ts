@@ -21,9 +21,3 @@ export function loadGsap(): Promise<GsapApi> {
   return pending;
 }
 
-/** Shared easings so every animation on the site feels related. */
-export const EASE = {
-  out: "expo.out",
-  inOut: "power3.inOut",
-  soft: "power2.out",
-} as const;

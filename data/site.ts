@@ -8,14 +8,15 @@ export const site = {
   tagline: "An Experiential Dessert Dining",
   by: "by Chef Jenny",
   /** The one line that says what MINIBÉ is. */
-  offer: "Plated desserts. Tasting menus. À la carte.",
+  offer: "Plated desserts. Tasting experiences. À la carte.",
+  /** The same line, set one phrase per line where space is tight. */
+  offerLines: ["Plated desserts.", "Tasting experiences.", "À la carte."],
   chef: {
     name: "Chef Jenny",
     instagram: "https://www.instagram.com/jennyclinta/",
     handle: "@jennyclinta",
   },
   city: "Bengaluru",
-  origin: "Andaman & Nicobar Islands",
 
   /** Homepage introduction — what MINIBÉ is, in one breath. */
   intro:

@@ -39,7 +39,7 @@ export const experience = {
   pillars: [
     { id: "plated", name: "Plated desserts", note: "Composed to order, served at the table." },
     { id: "seasonal", name: "Seasonal ingredients", note: "The menu changes because the produce does." },
-    { id: "french", name: "French technique", note: "Moelleux, madeleine, tarte tatin, petit fours." },
+    { id: "french", name: "French technique", note: "Classical pastry method behind every component." },
     { id: "indian", name: "Indian inspiration", note: "Local growers, homegrown makers, island memory." },
   ],
 };

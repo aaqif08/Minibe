@@ -213,7 +213,8 @@
     transition: transform 0.6s var(--ease-expo);
   }
   &:hover::after,
-  &:focus-visible::after {
+  &:focus-visible::after,
+  &[aria-current="page"]::after {
     transform: scaleX(1);
     transform-origin: left;
   }
@@ -369,7 +370,10 @@ html.motion [data-word] {
   }
 }
 .page-enter {
-  animation: page-enter 0.45s var(--ease-expo) both;
+  /* `backwards`, not `both`: once the entrance finishes the wrapper must hold
+     no transform or clip-path, or it becomes the containing block for
+     position: fixed and breaks ScrollTrigger pinning (the /story journey). */
+  animation: page-enter 0.45s var(--ease-expo) backwards;
 }
 @media (prefers-reduced-motion: reduce) {
   .page-enter {

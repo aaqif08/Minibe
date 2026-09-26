@@ -95,5 +95,10 @@ export function Button({
   );
 
   if (isText || !magnetic) return anchor;
-  return <MagneticButton>{anchor}</MagneticButton>;
+  // A full-width button needs a full-width wrapper, or the pull effect's box
+  // stays shrink-wrapped around it.
+  const fullWidth = className?.split(" ").includes("w-full");
+  return (
+    <MagneticButton className={fullWidth ? "block w-full sm:inline-block sm:w-auto" : undefined}>{anchor}</MagneticButton>
+  );
 }

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/metadata";
 import { site, chapter } from "@/data/site";
 import { contact, submitRoute } from "@/data/contact";
 import { PageHeader } from "@/components/ui/PageHeader";
@@ -9,12 +10,11 @@ import { EnquiryForm } from "@/components/ui/EnquiryForm";
 import { ContactChannels } from "@/components/site/ContactChannels";
 import { Services } from "@/components/site/Services";
 
-export const metadata: Metadata = {
-  title: "Contact",
-  description:
-    "Reserve a table at MINIBÉ, ask what's currently on the tasting menu, or enquire about corporate orders, private catering, grazing tables, wedding cakes and workshops in Bengaluru.",
-  alternates: { canonical: "/contact" },
-};
+export const metadata: Metadata = pageMetadata(
+  "Contact",
+  "Reserve a table at MINIBÉ, ask what's currently on the tasting menu, or enquire about corporate orders, private catering, grazing tables, wedding cakes and workshops in Bengaluru.",
+  "/contact",
+);
 
 /** /contact — the practical page: three channels, services, enquiry, address. */
 export default function ContactPage() {
@@ -56,13 +56,8 @@ export default function ContactPage() {
           </Reveal>
         </section>
 
-        {/* Services */}
-        <div className="wrap pt-section-sm">
-          <Services light />
-        </div>
-
-        {/* Enquiry form + where to find us */}
-        <div className="wrap grid grid-cols-12 gap-x-6 gap-y-16 py-section-sm md:py-section">
+        {/* Enquiry form + where to find us — directly under the channels */}
+        <div className="wrap grid grid-cols-12 gap-x-6 gap-y-16 pt-section-sm">
           <Reveal className="col-span-12 lg:col-span-6">
             <h2 className="t-eyebrow mb-10 text-orange">{contact.formTitle}</h2>
             <EnquiryForm />
@@ -121,6 +116,11 @@ export default function ContactPage() {
               </dl>
             </Reveal>
           </div>
+        </div>
+
+        {/* Services — after the enquiry */}
+        <div className="wrap py-section-sm">
+          <Services light />
         </div>
 
         <NextPage
